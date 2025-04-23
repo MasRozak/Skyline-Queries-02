@@ -41,8 +41,9 @@ int skylineQuery(Product products[], int productCount, Product skyline[]) {
 }
 
 ```
-Fungsi ini akan memeriksa setiap produk (i) dalam array products[], dan memeriksa apakah ada produk lain (j) yang mendominasi produk tersebut.
-Dominasi: Sebuah produk a dikatakan mendominasi produk b jika:
+1. Fungsi ini akan memeriksa setiap produk (i) dalam array products[], dan memeriksa apakah ada produk lain (j) yang mendominasi produk tersebut.
+
+2. Dominasi: Sebuah produk a dikatakan mendominasi produk b jika:
 - Atribut a.attr1 <= b.attr1 (harga a lebih kecil atau sama dengan harga b).
 - Atribut a.attr2 >= b.attr2 (nilai ulasan a lebih besar atau sama dengan nilai ulasan b).
 - salah satu dari atribut tersebut lebih baik dari atribut b (misalnya, harga lebih murah atau ulasan lebih tinggi).
