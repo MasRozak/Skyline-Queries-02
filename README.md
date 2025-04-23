@@ -114,3 +114,64 @@ Jadi, penggunaan hash table dalam algoritma Skyline Query dapat disimpulkan keun
 - Mempermudah manajemen hasil sementara skyline.
 
 ---
+
+# Analisis Performa Struktur Data untuk Skyline Query
+
+Dalam implementasi algoritma Skyline Query, enam struktur data yang digunakan untuk menyimpan dan memproses data adalah:
+
+- `Array`
+- `Stack`
+- `Queue`
+- `Linked List`
+- `Map` (`std::map`)
+- `Hash Table` (`std::unordered_map`)
+
+Setelah melakukan pengujian, ditemukan bahwa **Hash Table (unordered_map)** adalah yang tercepat, sedangkan **Map (std::map)** adalah yang paling lambat.
+
+---
+
+## 🔍 Penjelasan Performa
+
+### 1. Hash Table (`std::unordered_map`) ✅
+- **Kompleksitas rata-rata:** O(1) untuk pencarian, penyisipan, dan penghapusan.
+- **Mengapa cepat?**
+  - Menggunakan **hashing** yang mengakses elemen langsung melalui indeks hash.
+  - Cocok untuk pemeriksaan dan penghapusan elemen yang didominasi tanpa traversal sekuensial.
+- **Kelemahan:** Tidak menjaga urutan elemen.
+
+### 2. Map (`std::map`) ❌
+- **Kompleksitas:** O(log n) karena berbasis **binary search tree** (biasanya Red-Black Tree).
+- **Mengapa lambat?**
+  - Untuk setiap operasi pencarian dan penyisipan, perlu traversal tree.
+  - Meskipun elemen terurut, performa tidak cocok untuk kasus-kasus yang mengandalkan pencarian cepat.
+
+### 3. Array
+- **Kompleksitas:** O(n²) untuk skyline query karena perlu perbandingan berpasangan.
+- **Mengapa lumayan?**
+  - Akses langsung cepat (O(1)), tetapi tidak efisien untuk operasi manipulasi (penyisipan atau penghapusan di tengah).
+
+### 4. Stack / Queue
+- **Kompleksitas:** O(n²) juga saat membandingkan antar elemen.
+- **Karakteristik:**
+  - Stack: LIFO – tidak cocok untuk pemeriksaan dominasi acak.
+  - Queue: FIFO – sama, tidak efisien untuk pencarian acak.
+
+### 5. Linked List
+- **Kompleksitas:** O(n²) karena traversal pointer.
+- **Mengapa kalah cepat?**
+  - Tidak mendukung akses langsung.
+  - Semua perbandingan dan penghapusan perlu traversal manual.
+
+---
+
+## 🚀 Kesimpulan
+
+| Struktur Data     | Kecepatan  | Kompleksitas | Catatan                                      |
+|-------------------|------------|--------------|----------------------------------------------|
+| Hash Table        | ⭐⭐⭐⭐⭐     | O(1)         | Tercepat, ideal untuk lookup & update cepat  |
+| Array             | ⭐⭐⭐       | O(n²)        | Sederhana, tapi boros saat data besar        |
+| Stack / Queue     | ⭐⭐        | O(n²)        | Tidak efisien untuk skyline                  |
+| Linked List       | ⭐⭐        | O(n²)        | Sulit untuk penghapusan & traversal acak     |
+| Map               | ⭐         | O(log n)     | Terlambat karena traversal tree              |
+
+Gunakan `Hash Table` untuk performa maksimal dalam kasus seperti Skyline Query yang melibatkan banyak pemeriksaan dominasi antar elemen.
