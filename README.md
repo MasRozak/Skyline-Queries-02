@@ -263,9 +263,9 @@ Hasil akhir: `sky` berisi produk-produk skyline yang **saling incomparable** yai
 
 🔳 **Output:**  
 Output dari program ini adalah sembilan produk yang saling incomparable. Input yang digunakan adalah file .csv yang berisi 1000 data produk baju.
+![image](https://github.com/user-attachments/assets/199dccb9-63b1-4eea-9f20-b407c9f02121)
 
-
-📍 **Kesimpulan: **
+📍 **Kesimpulan:**
 Queue lebih efisien digunakan untuk data berukuran kecil sampai menengah dan kurang cocok apabila digunakan untuk data berukuran besar dikarenakan kompleksitasnya **O(n²)**.
 
 ## 🔍 Penjelasan Performa
