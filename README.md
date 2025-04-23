@@ -50,6 +50,7 @@ int skylineQuery(Product products[], int productCount, Product skyline[]) {
 
 ### Berikut Output Array Menggunakan Data 1000 Baju
 ![Screenshot 2025-04-23 233802](https://github.com/user-attachments/assets/19cfa8f6-cb30-4628-aa9f-8ff20398ca01)
+Output pada gambar tersebut menampilkan daftar produk pakaian ("Skyline Products (Baju Terbaik)") yang telah dipilih atau diurutkan berdasarkan performa ulasan terbaik.
 
 
 ## 📝 2. Implementasi Skyline Query Menggunakan Linked List
