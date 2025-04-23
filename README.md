@@ -355,9 +355,9 @@ Output dari program ini adalah sembilan produk yang saling incomparable. Input y
 📍 **Kesimpulan:**
 Queue lebih efisien digunakan untuk data berukuran kecil sampai menengah dan kurang cocok apabila digunakan untuk data berukuran besar dikarenakan kompleksitasnya **O(n²)**.
 
+---
 
-
-### 📝 Implementasi Skyline Query Menggunakan Linked List
+## 📝 Implementasi Skyline Query Menggunakan Linked List
 
 ### 📌 Deskripsi Proyek
 Skyline Query merupakan metode untuk menemukan entitas-entitas terbaik (tidak terdominasi) dalam sebuah dataset berdasarkan beberapa kriteria. Pada studi kasus ini, kita mencari produk baju terbaik dari dataset berisi 1000 entri berdasarkan dua atribut:
