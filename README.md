@@ -163,6 +163,64 @@ Jadi, penggunaan hash table dalam algoritma Skyline Query dapat disimpulkan keun
 
 ---
 
+## 📖 6. Penjelasan Penggunaan Map dalam Algoritma Skyline Query
+### 📑 Apa itu Map ❓
+**Map** adalah struktur data yang menyimpan pasangan kunci-nilai. Dalam konteks Skyline Query, kita menggunakan `std::map` untuk menyimpan objek `Baju` berdasarkan ID-nya. Map ini diimplementasikan sebagai **binary search tree** (biasanya Red-Black Tree), yang memungkinkan penyimpanan elemen dalam urutan tertentu.
+### 🔧 Fungsi Skyline Query dengan Map
+Dalam implementasi ini, std::map digunakan untuk menyimpan hasil akhir dari skyline query. Berikut struktur penyimpanannya:
+```cpp
+map<string, Point> skylineMap;
+```
+Map tersebut menyimpan data dalam bentuk:
+
+   - key: Label atau ID dari produk (string)
+
+   - value: Vektor atribut (Point), berisi harga dan rating
+
+⚙️ Proses Algoritma:
+Pada proses akhir skyline query:
+
+Setelah menghitung global skyline, hasil disimpan dalam struktur map.
+
+Data disusun secara otomatis berdasarkan urutan alfabet label karena std::map menjaga urutan berdasarkan key.
+
+Penyimpanan ke dalam map dilakukan dengan satu baris sederhana:
+
+```cpp
+skylineMap[item.first] = item.second;
+```
+
+### 💡 Keuntungan Penggunaan map
+Fitur | Keuntungan Menggunakan std::map
+📚 Urutan Berdasarkan Key | Data terurut otomatis berdasarkan label
+🔍 Akses Mudah dan Aman | Cek apakah suatu label sudah ada atau tidak
+🧩 Struktur Teratur | Mudah untuk ditampilkan dan ditelusuri
+🔁 Iterasi Teratur | Cocok untuk mencetak hasil yang rapi
+
+
+### ⏱️ Kompleksitas
+Penyisipan dan penghapusan: O(log N)
+
+Pencarian berdasarkan key: O(log N)
+
+Walaupun tidak secepat unordered_map (yang O(1) untuk rata-rata kasus), map menawarkan keuntungan keterurutan, yang cocok bila ingin hasil akhir tertata rapi (misalnya, saat menampilkan output ke pengguna).
+
+![Image](https://github.com/user-attachments/assets/1e40ddc2-afaf-497d-abc4-aed2f44c1369)
+
+### 📌 Kesimpulan Penggunaan Map
+Penggunaan std::map dalam implementasi Skyline Query ini memberikan manfaat berikut:
+
+Menyimpan hasil skyline secara terstruktur dan terurut.
+
+Mempermudah visualisasi dan debugging.
+
+Lebih stabil dan deterministik urutan hasil dibandingkan unordered_map.
+
+Cocok digunakan pada aplikasi yang membutuhkan output yang bisa ditebak urutannya, seperti laporan pengguna atau data statistik.
+
+
+
+
 # Analisis Performa Struktur Data untuk Skyline Query
 
 Dalam implementasi algoritma Skyline Query, enam struktur data yang digunakan untuk menyimpan dan memproses data adalah:
