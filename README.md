@@ -149,6 +149,125 @@ Setelah melakukan pengujian, ditemukan bahwa **Hash Table (unordered_map)** adal
 
 ---
 
+## 🔢 5. Penjelasan Penggunaan Queue dalam Algoritma Skyline Query
+
+Pada kasus ini, setiap objek adalah sebuah entitas Baju dengan dua atribut utama:
+- harga yaitu atr_1 (semakin rendah semakin baik).
+- rating yaitu atr_2 (semakin tinggi semakin baik).
+
+- ### 🎯 Aturan Dominasi:
+Objek A dikatakan *mendominasi* objek B jika:
+- A.harga <= B.harga *dan*
+- A.rating >= B.rating, serta
+- Setidaknya salah satu atribut *lebih baik secara ketat*
+
+### Apa itu Queue ❓❔
+<b>Queue</b> merupakan suatu struktur data yang mengikuti prinsip First In First Out (FIFO) yang mana data yang lebih dahulu masuk akan pertama kali keluar. Pada struktur data queue, urutan pertama (data yang akan dikeluarkan) disebut Front atau Head sedangkan data pada urutan terakhir (data yang baru saja ditambahkan) disebut Back, Rear, atau Tail. Proses untuk menambahkan data pada antrean disebut dengan Enqueue, sedangkan proses untuk menghapus data dari antrean disebut dengan Dequeue. Queue digunakan untuk mengatur dan mengelola antrean tugas atau operasi secara efisien.
+
+### 🔧 Fungsi Skyline Query dengan Queue
+
+### Potongan Code:
+```
+bool dominates(const product& a, const product& b) {
+    return (a.atr_1 <= b.atr_1 && a.atr_2 >= b.atr_2)
+        && (a.atr_1 <  b.atr_1 || a.atr_2 >  b.atr_2);
+}
+```
+Function dominates di atas digunakan untuk mengecek suatu Baju apakah mendominasi produk lainnya. Dengan membandingkan atribut harga dan rating akan didapat produk yang telah berhasil mendominasi dengan kriteria harga yang lebih rendah tetapi dengan rating yang lebih tinggi dibanding produk lainnya.
+
+Contoh Dominasi:  
+- Produk 1 Harga 20 Ulasan 140 vs Produk 2 Harga 15 Ulasan 140  
+Dalam kasus di atas, produk 2 mendominasi produk 1 dikarenakan mempunyai ulasan yang sama dengan harga yang lebih rendah.
+
+```
+vector<product> skyline_with_queue(const vector<product>& items) {
+    queue<product> q;
+    for (auto& s : items) {
+        bool isDominated = false;
+        int n = q.size();
+
+        // pop–compare–push cycle
+        for (int i = 0; i < n; ++i) {
+            product cur = q.front(); q.pop();
+
+            if (dominates(cur, s)) {
+                // ada yang ngalahin s → skip s, keep cur
+                isDominated = true;
+                q.push(cur);
+            }
+            else if (dominates(s, cur)) {
+                // s ngalahin cur → drop cur (tidak push)
+                continue;
+            }
+            else {
+                // keduanya ga saling ngalahin → keep cur
+                q.push(cur);
+            }
+        }
+
+        if (!isDominated) {
+            // s belum terkalahkan → push
+            q.push(s);
+        }
+    }
+
+    // ambil hasil skyline dari queue
+    vector<product> sky;
+    while (!q.empty()) {
+        sky.push_back(q.front());
+        q.pop();
+    }
+    return sky;
+}
+```
+
+Fungsi di atas menyimpan kandidat skyline sementara dalam queue yang dideklarasikan dalam **queue <product> q**. Setiap produk **s** dalam items akan dicompare dengan menggunakan function dominates. Jika suatu produk tidak terdominasi maka akan dimasukkan ke skyline. Hal ini akan dilakukan terus sampai semua product yang ada di queue tidak bisa saling mendominasi lagi.
+
+### Proses Algoritma:
+Untuk setiap produk `s` dalam `items`:
+1. **Siapkan Queue dan Flag**  
+   - Buat `bool isDominated = false` untuk menandai jika `s` ter-dominasi.  
+   - Simpan `int n = q.size()` untuk menghitung berapa elemen lama di queue.
+
+2. **Pop–Compare–Push** (loop sebanyak `n` kali):  
+   - `product cur = q.front(); q.pop();`  
+   - Jika `dominates(cur, s)`:  
+     - `isDominated = true` (abaikan `s`).  
+     - `q.push(cur);` (kembalikan `cur`).  
+   - Else if `dominates(s, cur)`:  
+     - Buang `cur` (tidak `push`).  
+   - Else:  
+     - `q.push(cur);` (keduanya incomparable, kembalikan `cur`).
+
+3. **Tambah `s` ke Queue**  
+   - Jika `!isDominated`, `q.push(s);`
+
+4. **Hasil Skyline**  
+   - Setelah memproses semua `items`, transfer isi `q` ke `vector<product> sky`:  
+     ```cpp
+     vector<product> sky;
+     while (!q.empty()) {
+         sky.push_back(q.front());
+         q.pop();
+     }
+     return sky;
+     ```
+
+---
+
+Hasil akhir: `sky` berisi produk-produk skyline yang **saling incomparable** yaitu antar produk tidak kalah dengan yang lainnya.
+
+
+⏲️ **Kompleksitas:**   
+ Kompleksitas pada code ini adalah **O(n²)** yang mana algoritma akan melakukan N*N perbandingan seiring data bertambah. Semakin banyak data akan semakin lambat juga. Algoritma ini lebih cocok apabila digunakan untuk jumlah data yang kecil. Apabila digunakan dalam data yang berjumlah banyak akan sangat tidak efisien.
+
+🔳 **Output:**  
+Output dari program ini adalah sembilan produk yang saling incomparable. Input yang digunakan adalah file .csv yang berisi 1000 data produk baju.
+
+
+📍 **Kesimpulan: **
+Queue lebih efisien digunakan untuk data berukuran kecil sampai menengah dan kurang cocok apabila digunakan untuk data berukuran besar dikarenakan kompleksitasnya **O(n²)**.
+
 ## 🔍 Penjelasan Performa
 
 ### 1. Hash Table (`std::unordered_map`) ✅
