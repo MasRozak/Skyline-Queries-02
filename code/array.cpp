@@ -18,9 +18,10 @@ struct Product {
 };
 
 bool dominates(const Product &a, const Product &b) {
-    return (a.attr1 <= b.attr1 && a.attr2 <= b.attr2) &&
-           (a.attr1 < b.attr1 || a.attr2 < b.attr2);
+    return (a.attr1 <= b.attr1 && a.attr2 >= b.attr2) &&
+           (a.attr1 < b.attr1 || a.attr2 > b.attr2);
 }
+
 
 int readCSV(const string &filename, Product products[]) {
     ifstream file(filename);
@@ -100,3 +101,4 @@ int main() {
 
     return 0;
 }
+
