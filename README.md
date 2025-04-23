@@ -355,6 +355,90 @@ Output dari program ini adalah sembilan produk yang saling incomparable. Input y
 📍 **Kesimpulan:**
 Queue lebih efisien digunakan untuk data berukuran kecil sampai menengah dan kurang cocok apabila digunakan untuk data berukuran besar dikarenakan kompleksitasnya **O(n²)**.
 
+
+📝 Implementasi Skyline Query Menggunakan Linked List
+📌 Deskripsi Proyek
+Skyline Query merupakan metode untuk menemukan entitas-entitas terbaik (tidak terdominasi) dalam sebuah dataset berdasarkan beberapa kriteria. Pada studi kasus ini, kita mencari produk baju terbaik dari dataset berisi 1000 entri berdasarkan dua atribut:
+
+>Attr1: Harga (semakin rendah semakin baik)
+>Attr2: Nilai ulasan atau rating (semakin tinggi semakin baik)
+
+🧠 Penjelasan Struktur Data: Linked List
+Linked List adalah struktur data linear yang terdiri dari node-node, di mana setiap node menyimpan data dan pointer ke node berikutnya. Berbeda dengan array yang bersifat statik, linked list bersifat dinamis dan memungkinkan operasi sisip dan hapus elemen dilakukan secara efisien tanpa perlu geser elemen lainnya.
+
+🔍 Mengapa Linked List?
+Efisien dalam Traversal: Skyline Query membutuhkan traversal terhadap seluruh data, dan linked list mendukung traversal sekuensial tanpa overhead pemindahan data seperti array.
+
+>Dinamis & Ringan: Tidak perlu mengalokasikan memori besar sejak awal.
+>Tidak bergantung pada ukuran tetap: Cocok untuk data input dengan ukuran besar atau tidak diketahui sebelumnya.
+
+⚙️ Cara Kerja Linked List dalam Implementasi Skyline Query
+1. Membaca Dataset: Dataset dibaca baris per baris dari file CSV dan diubah menjadi Node (linked list).
+2. Dominasi: Dua node dibandingkan berdasarkan:
+>Harga lebih rendah dan
+>Ulasan lebih tinggi
+3. Skyline Set: Sebuah produk masuk ke hasil jika tidak terdominasi oleh produk lain.
+4. Optimalisasi: Skyline diperbarui dengan menghapus produk yang terdominasi oleh produk yang lebih baik.
+
+📄 Cuplikan Kode Implementasi:
+
+>> bool dominates(Node* a, Node* b) {
+    return (a->attr1 <= b->attr1 && a->attr2 <= b->attr2) &&
+           (a->attr1 < b->attr1 || a->attr2 < b->attr2);
+}
+
+>> std::vector<Node*> skylineQuery(Node* head) {
+    std::vector<Node*> skyline;
+    for (Node* current = head; current != nullptr; current = current->next) {
+        bool dominated = false;
+        for (auto& s : skyline) {
+            if (dominates(s, current)) {
+                dominated = true;
+                break;
+            }
+        }
+        if (!dominated) {
+            skyline.erase(std::remove_if(skyline.begin(), skyline.end(),
+                            [&](Node* s) { return dominates(current, s); }), skyline.end());
+            skyline.push_back(current);
+        }
+    }
+    return skyline;
+}
+
+⏱️ Pengukuran Performa:
+
+>> auto start = std::chrono::high_resolution_clock::now();
+// proses skyline
+auto end = std::chrono::high_resolution_clock::now();
+std::chrono::duration<double> duration = end - start;
+
+output:
+
+![image](https://github.com/user-attachments/assets/02bc914e-fafe-42d7-aba3-12c06a91e8f9)
+
+
+📊 Analisis Kompleksitas
+Waktu: O(n²), karena setiap elemen dibandingkan dengan elemen lainnya.
+
+Ruang: O(n), untuk menyimpan hasil skyline dan linked list.
+
+Namun, Linked List lebih efisien dibanding array atau queue pada kasus tertentu, karena:
+
+Tidak ada alokasi ulang memori (seperti array)
+
+Penghapusan node tidak perlu pergeseran data
+
+Lebih ringan saat parsing dan pembuatan struktur data
+
+✅ Kesimpulan
+Linked List cocok untuk implementasi skyline query dengan data ukuran besar karena efisiensi memori dan kemudahan traversal.
+
+Dapat menghindari overhead struktural yang sering terjadi pada struktur data statik seperti array.
+
+Performa sangat baik jika implementasi dilakukan dengan benar, seperti yang dibuktikan dengan waktu komputasi rendah dalam uji coba 1000 entri.
+
+
 ## 🔍 Penjelasan Performa
 
 ### 1. Hash Table (`std::unordered_map`) ✅
