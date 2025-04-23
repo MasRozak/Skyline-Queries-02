@@ -39,7 +39,7 @@ Berikut merupakan sebuah diagram yang dapat menggambarkan proses algoritmanya:
 
 Pada diagram tersebut, kita dapat melihat bahwa penggunaan hash table bekerja dengan cara mengiterasikan tiap data dan menyimpan data yang benar dalam sebuah hash table dan akan mengembalikan data dalam bentuk vector.
 
-### Contoh Kode Inti:
+### Logika Kode Inti:
 ```cpp
 if (!didominasi) {
     for (int id : toRemove) {
@@ -48,6 +48,11 @@ if (!didominasi) {
     hashSkyline[baju.id] = baju;
 }
 ```
+
+Pada potongan kode inti tersebut, program akan mengecek apakah produk saat ini **tidak didominasi** oleh produk lain di hash table. Jika iya, maka produk ini akan dijadikan kandidat skyline dan akan 'mengusir' produk lain yang terdominasi oleh produk ini. Lalu program akan melakukan penambahan produk baru yang dianggap terbaik dan akan konstan selalu mengecek apakah hash table hanya berisi dengan produk-produk terbaik.
+
+⏱️ Kompleksitas:
+   - Pada kode ini, kompleksitas dalam notasi big O adalah O(N), dimana N adalah jumlah produk yang didominasi. Jadi, secara general, cukup efektif dan cepat.
 
 Adapun output dari program tersebut setelah menganalisis dataset yang telah diberikan sebagai berikut: (menggunakan data 1000 baju)
 
