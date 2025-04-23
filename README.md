@@ -1,6 +1,25 @@
 # Skyline-Queries-02
 Skyline Queries Problem Kelompok 2
 ---
+## 📘 1. Penggunaan Array dalam Algoritma Skyline Query
+
+Pada kasus ini kita ditugaskan untuk menemukan produk-produk terbaik (baju) dari dataset CSV berdasarkan:
+- Harga (lebih murah lebih baik)
+- Nilai Ulasan (semakin tinggi semakin baik)
+Produk termasuk Skyline jika tidak ada produk lain yang lebih murah DAN memiliki ulasan lebih tinggi.
+
+### Aturan Dominasi dalam Skyline Query
+Sebuah produk A mendominasi produk B jika dan hanya jika:
+Harga A lebih murah atau sama dengan harga B, dan
+Nilai ulasan A lebih tinggi atau sama dengan nilai ulasan B, dan
+Ada minimal satu atribut di mana A lebih baik dari B
+
+### Apa Itu Array?
+Array adalah struktur data yang digunakan untuk menyimpan sekumpulan elemen dengan tipe data yang sama dalam satu blok memori, dan diakses menggunakan indeks.
+
+
+
+
 
 ## 📊 4. Penjelasan Penggunaan Hash Table dalam Algoritma Skyline Query
 
