@@ -129,13 +129,13 @@ int main() {
     auto t0 = chrono::high_resolution_clock::now();
     auto sky = skyline_with_queue(products);
     auto t1 = chrono::high_resolution_clock::now();
-    double elapsed = chrono::duration<double, milli>(t1 - t0).count();
+    double elapsed = chrono::duration<double>(t1 - t0).count();
 
     cout << "=== Hasil Skyline ===\n";
     print_table(sky);
     cout << "Waktu komputasi skyline: " 
          << fixed << setprecision(3) << elapsed 
-         << " ms\n";
+         << " detik\n";
 
 
     return 0;
