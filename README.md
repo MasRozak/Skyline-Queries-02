@@ -262,8 +262,8 @@ Hasil akhir: `sky` berisi produk-produk skyline yang **saling incomparable** yai
  Kompleksitas pada code ini adalah **O(n²)** yang mana algoritma akan melakukan N*N perbandingan seiring data bertambah. Semakin banyak data akan semakin lambat juga. Algoritma ini lebih cocok apabila digunakan untuk jumlah data yang kecil. Apabila digunakan dalam data yang berjumlah banyak akan sangat tidak efisien.
 
 🔳 **Output:**  
-Output dari program ini adalah sembilan produk yang saling incomparable. Input yang digunakan adalah file .csv yang berisi 1000 data produk baju.
-![image](https://github.com/user-attachments/assets/199dccb9-63b1-4eea-9f20-b407c9f02121)
+Output dari program ini adalah sembilan produk yang saling incomparable. Input yang digunakan adalah file .csv yang berisi 1000 data produk baju.  
+  ![image](https://github.com/user-attachments/assets/199dccb9-63b1-4eea-9f20-b407c9f02121)
 
 📍 **Kesimpulan:**
 Queue lebih efisien digunakan untuk data berukuran kecil sampai menengah dan kurang cocok apabila digunakan untuk data berukuran besar dikarenakan kompleksitasnya **O(n²)**.
