@@ -1,5 +1,16 @@
 # Skyline-Queries-02
 Skyline Queries Problem Kelompok 2
+
+| No | NRP         | Nama                        |
+|----|-------------|-----------------------------|
+| 2  | 5027241090  | Tiara Fatimah Azzahra       |
+|    | 5027241059  | Andi Naufal Zaki            |
+|    | 5027241038  | Moch. Riski Nasrullah       |
+|    | 5027241056  | Theodorus Aaron Ugraha      |
+|    | 5027241041  | Raya Ahmadi Syarif          |
+|    | 5027241087  | Az Zahra Tasya Adelia       |
+
+
 ---
 ## 📘 1. Penggunaan Array dalam Algoritma Skyline Query
 
