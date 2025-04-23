@@ -48,6 +48,10 @@ int skylineQuery(Product products[], int productCount, Product skyline[]) {
 - Atribut a.attr2 >= b.attr2 (nilai ulasan a lebih besar atau sama dengan nilai ulasan b).
 - salah satu dari atribut tersebut lebih baik dari atribut b (misalnya, harga lebih murah atau ulasan lebih tinggi).
 
+### Berikut Output Array Menggunakan Data 1000 Baju
+![Screenshot 2025-04-23 233802](https://github.com/user-attachments/assets/19cfa8f6-cb30-4628-aa9f-8ff20398ca01)
+
+
 ## 📝 2. Implementasi Skyline Query Menggunakan Linked List
 
 ### 📌 Deskripsi Proyek
