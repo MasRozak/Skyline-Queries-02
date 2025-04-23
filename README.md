@@ -102,14 +102,14 @@ Keuntungan ini juga tercatat dalam Output ketika menggunakan set kode yang telah
 
 ![image](https://github.com/user-attachments/assets/6d0406aa-77a9-41ca-8c27-13f5a7d4318d)
 
-Dari gambar output tersebut, dapat disimpulkan bahwa penggunaan hash table tergolong sangat cepat dan menggunakan waktu yang sangat minimum untuk menemukan data yang tida terdominasi.
+Dari gambar output tersebut, dapat disimpulkan bahwa penggunaan hash table tergolong sangat cepat dan menggunakan waktu yang sangat minimum untuk menemukan data yang tidak terdominasi.
 
 ---
 
 ### 📌 Kesimpulan
 
-Penggunaan `unordered_map` sebagai hash table dalam algoritma Skyline Query:
-- **Tepat** secara logika dan efisien.
+Jadi, penggunaan hash table dalam algoritma Skyline Query dapat disimpulkan keuntungannya menjadi berikut:
+- Tepat secara logika dan efisien.
 - Meningkatkan performa pencarian, penambahan, dan penghapusan.
 - Mempermudah manajemen hasil sementara skyline.
 
