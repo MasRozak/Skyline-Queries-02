@@ -48,6 +48,87 @@ int skylineQuery(Product products[], int productCount, Product skyline[]) {
 - Atribut a.attr2 >= b.attr2 (nilai ulasan a lebih besar atau sama dengan nilai ulasan b).
 - salah satu dari atribut tersebut lebih baik dari atribut b (misalnya, harga lebih murah atau ulasan lebih tinggi).
 
+## 📝 2. Implementasi Skyline Query Menggunakan Linked List
+
+### 📌 Deskripsi Proyek
+Skyline Query merupakan metode untuk menemukan entitas-entitas terbaik (tidak terdominasi) dalam sebuah dataset berdasarkan beberapa kriteria. Pada studi kasus ini, kita mencari produk baju terbaik dari dataset berisi 1000 entri berdasarkan dua atribut:
+
+>Attr1: Harga (semakin rendah semakin baik)
+>Attr2: Nilai ulasan atau rating (semakin tinggi semakin baik)
+
+### 🧠 Penjelasan Struktur Data: Linked List
+Linked List adalah struktur data linear yang terdiri dari node-node, di mana setiap node menyimpan data dan pointer ke node berikutnya. Berbeda dengan array yang bersifat statik, linked list bersifat dinamis dan memungkinkan operasi sisip dan hapus elemen dilakukan secara efisien tanpa perlu geser elemen lainnya.
+
+### 🔍 Mengapa Linked List?
+Efisien dalam Traversal: Skyline Query membutuhkan traversal terhadap seluruh data, dan linked list mendukung traversal sekuensial tanpa overhead pemindahan data seperti array.
+
+>Dinamis & Ringan: Tidak perlu mengalokasikan memori besar sejak awal.
+>Tidak bergantung pada ukuran tetap: Cocok untuk data input dengan ukuran besar atau tidak diketahui sebelumnya.
+
+### ⚙️ Cara Kerja Linked List dalam Implementasi Skyline Query
+1. Membaca Dataset: Dataset dibaca baris per baris dari file CSV dan diubah menjadi Node (linked list).
+2. Dominasi: Dua node dibandingkan berdasarkan:
+>Harga lebih rendah dan
+>Ulasan lebih tinggi
+3. Skyline Set: Sebuah produk masuk ke hasil jika tidak terdominasi oleh produk lain.
+4. Optimalisasi: Skyline diperbarui dengan menghapus produk yang terdominasi oleh produk yang lebih baik.
+
+### 📄 Cuplikan Kode Implementasi:
+
+```
+bool dominates(Node* a, Node* b) {
+    return (a->attr1 <= b->attr1 && a->attr2 <= b->attr2) &&
+           (a->attr1 < b->attr1 || a->attr2 < b->attr2);
+}
+```
+
+```
+std::vector<Node*> skylineQuery(Node* head) {
+    std::vector<Node*> skyline;
+    for (Node* current = head; current != nullptr; current = current->next) {
+        bool dominated = false;
+        for (auto& s : skyline) {
+            if (dominates(s, current)) {
+                dominated = true;
+                break;
+            }
+        }
+        if (!dominated) {
+            skyline.erase(std::remove_if(skyline.begin(), skyline.end(),
+                            [&](Node* s) { return dominates(current, s); }), skyline.end());
+            skyline.push_back(current);
+        }
+    }
+    return skyline;
+}
+```
+### ⏱️ Pengukuran Performa:
+
+```
+auto start = std::chrono::high_resolution_clock::now();
+// proses skyline
+auto end = std::chrono::high_resolution_clock::now();
+std::chrono::duration<double> duration = end - start;
+```
+
+### output:
+
+![image](https://github.com/user-attachments/assets/02bc914e-fafe-42d7-aba3-12c06a91e8f9)
+
+
+### 📊 Analisis Kompleksitas
+>>Waktu: O(n²), karena setiap elemen dibandingkan dengan elemen lainnya.
+>>Ruang: O(n), untuk menyimpan hasil skyline dan linked list.
+
+### Namun, Linked List lebih efisien dibanding array atau queue pada kasus tertentu, karena:
+>>Tidak ada alokasi ulang memori (seperti array)
+>>Penghapusan node tidak perlu pergeseran data
+>>Lebih ringan saat parsing dan pembuatan struktur data
+
+### ✅ Kesimpulan
+>>Linked List cocok untuk implementasi skyline query dengan data ukuran besar karena efisiensi memori dan kemudahan traversal.
+>> Dapat menghindari overhead struktural yang sering terjadi pada struktur data statik seperti array.
+>> Performa sangat baik jika implementasi dilakukan dengan benar, seperti yang dibuktikan dengan waktu komputasi rendah dalam uji coba 1000 entri.
 
 
 ## 📊 4. Penjelasan Penggunaan Hash Table dalam Algoritma Skyline Query
@@ -160,79 +241,6 @@ Jadi, penggunaan hash table dalam algoritma Skyline Query dapat disimpulkan keun
 - Tepat secara logika dan efisien.
 - Meningkatkan performa pencarian, penambahan, dan penghapusan.
 - Mempermudah manajemen hasil sementara skyline.
-
----
-
-## 📖 6. Penjelasan Penggunaan Map dalam Algoritma Skyline Query
-### 📑 Apa itu Map ❓
-**Map** adalah struktur data yang menyimpan pasangan kunci-nilai. Dalam konteks Skyline Query, kita menggunakan `std::map` untuk menyimpan objek `Baju` berdasarkan ID-nya. Map ini diimplementasikan sebagai **binary search tree** (biasanya Red-Black Tree), yang memungkinkan penyimpanan elemen dalam urutan tertentu.
-### 🔧 Fungsi Skyline Query dengan Map
-Dalam implementasi ini, std::map digunakan untuk menyimpan hasil akhir dari skyline query. Berikut struktur penyimpanannya:
-```cpp
-map<string, Point> skylineMap;
-```
-Map tersebut menyimpan data dalam bentuk:
-
-   - key: Label atau ID dari produk (string)
-
-   - value: Vektor atribut (Point), berisi harga dan rating
-
-⚙️ Proses Algoritma:
-Pada proses akhir skyline query:
-
-Setelah menghitung global skyline, hasil disimpan dalam struktur map.
-
-Data disusun secara otomatis berdasarkan urutan alfabet label karena std::map menjaga urutan berdasarkan key.
-
-Penyimpanan ke dalam map dilakukan dengan satu baris sederhana:
-
-```cpp
-skylineMap[item.first] = item.second;
-```
-
-### 💡 Keuntungan Penggunaan map
-Fitur | Keuntungan Menggunakan std::map
-📚 Urutan Berdasarkan Key | Data terurut otomatis berdasarkan label
-🔍 Akses Mudah dan Aman | Cek apakah suatu label sudah ada atau tidak
-🧩 Struktur Teratur | Mudah untuk ditampilkan dan ditelusuri
-🔁 Iterasi Teratur | Cocok untuk mencetak hasil yang rapi
-
-
-### ⏱️ Kompleksitas
-Penyisipan dan penghapusan: O(log N)
-
-Pencarian berdasarkan key: O(log N)
-
-Walaupun tidak secepat unordered_map (yang O(1) untuk rata-rata kasus), map menawarkan keuntungan keterurutan, yang cocok bila ingin hasil akhir tertata rapi (misalnya, saat menampilkan output ke pengguna).
-
-![Image](https://github.com/user-attachments/assets/1e40ddc2-afaf-497d-abc4-aed2f44c1369)
-
-### 📌 Kesimpulan Penggunaan Map
-Penggunaan std::map dalam implementasi Skyline Query ini memberikan manfaat berikut:
-
-Menyimpan hasil skyline secara terstruktur dan terurut.
-
-Mempermudah visualisasi dan debugging.
-
-Lebih stabil dan deterministik urutan hasil dibandingkan unordered_map.
-
-Cocok digunakan pada aplikasi yang membutuhkan output yang bisa ditebak urutannya, seperti laporan pengguna atau data statistik.
-
-
-
-
-# Analisis Performa Struktur Data untuk Skyline Query
-
-Dalam implementasi algoritma Skyline Query, enam struktur data yang digunakan untuk menyimpan dan memproses data adalah:
-
-- `Array`
-- `Stack`
-- `Queue`
-- `Linked List`
-- `Map` (`std::map`)
-- `Hash Table` (`std::unordered_map`)
-
-Setelah melakukan pengujian, ditemukan bahwa **Hash Table (unordered_map)** adalah yang tercepat, sedangkan **Map (std::map)** adalah yang paling lambat.
 
 ---
 
@@ -357,87 +365,79 @@ Queue lebih efisien digunakan untuk data berukuran kecil sampai menengah dan kur
 
 ---
 
-## 📝 Implementasi Skyline Query Menggunakan Linked List
-
-### 📌 Deskripsi Proyek
-Skyline Query merupakan metode untuk menemukan entitas-entitas terbaik (tidak terdominasi) dalam sebuah dataset berdasarkan beberapa kriteria. Pada studi kasus ini, kita mencari produk baju terbaik dari dataset berisi 1000 entri berdasarkan dua atribut:
-
->Attr1: Harga (semakin rendah semakin baik)
->Attr2: Nilai ulasan atau rating (semakin tinggi semakin baik)
-
-### 🧠 Penjelasan Struktur Data: Linked List
-Linked List adalah struktur data linear yang terdiri dari node-node, di mana setiap node menyimpan data dan pointer ke node berikutnya. Berbeda dengan array yang bersifat statik, linked list bersifat dinamis dan memungkinkan operasi sisip dan hapus elemen dilakukan secara efisien tanpa perlu geser elemen lainnya.
-
-### 🔍 Mengapa Linked List?
-Efisien dalam Traversal: Skyline Query membutuhkan traversal terhadap seluruh data, dan linked list mendukung traversal sekuensial tanpa overhead pemindahan data seperti array.
-
->Dinamis & Ringan: Tidak perlu mengalokasikan memori besar sejak awal.
->Tidak bergantung pada ukuran tetap: Cocok untuk data input dengan ukuran besar atau tidak diketahui sebelumnya.
-
-### ⚙️ Cara Kerja Linked List dalam Implementasi Skyline Query
-1. Membaca Dataset: Dataset dibaca baris per baris dari file CSV dan diubah menjadi Node (linked list).
-2. Dominasi: Dua node dibandingkan berdasarkan:
->Harga lebih rendah dan
->Ulasan lebih tinggi
-3. Skyline Set: Sebuah produk masuk ke hasil jika tidak terdominasi oleh produk lain.
-4. Optimalisasi: Skyline diperbarui dengan menghapus produk yang terdominasi oleh produk yang lebih baik.
-
-### 📄 Cuplikan Kode Implementasi:
-
+## 📖 6. Penjelasan Penggunaan Map dalam Algoritma Skyline Query
+### 📑 Apa itu Map ❓
+**Map** adalah struktur data yang menyimpan pasangan kunci-nilai. Dalam konteks Skyline Query, kita menggunakan `std::map` untuk menyimpan objek `Baju` berdasarkan ID-nya. Map ini diimplementasikan sebagai **binary search tree** (biasanya Red-Black Tree), yang memungkinkan penyimpanan elemen dalam urutan tertentu.
+### 🔧 Fungsi Skyline Query dengan Map
+Dalam implementasi ini, std::map digunakan untuk menyimpan hasil akhir dari skyline query. Berikut struktur penyimpanannya:
+```cpp
+map<string, Point> skylineMap;
 ```
-bool dominates(Node* a, Node* b) {
-    return (a->attr1 <= b->attr1 && a->attr2 <= b->attr2) &&
-           (a->attr1 < b->attr1 || a->attr2 < b->attr2);
-}
+Map tersebut menyimpan data dalam bentuk:
+
+   - key: Label atau ID dari produk (string)
+
+   - value: Vektor atribut (Point), berisi harga dan rating
+
+⚙️ Proses Algoritma:
+Pada proses akhir skyline query:
+
+Setelah menghitung global skyline, hasil disimpan dalam struktur map.
+
+Data disusun secara otomatis berdasarkan urutan alfabet label karena std::map menjaga urutan berdasarkan key.
+
+Penyimpanan ke dalam map dilakukan dengan satu baris sederhana:
+
+```cpp
+skylineMap[item.first] = item.second;
 ```
 
-```
-std::vector<Node*> skylineQuery(Node* head) {
-    std::vector<Node*> skyline;
-    for (Node* current = head; current != nullptr; current = current->next) {
-        bool dominated = false;
-        for (auto& s : skyline) {
-            if (dominates(s, current)) {
-                dominated = true;
-                break;
-            }
-        }
-        if (!dominated) {
-            skyline.erase(std::remove_if(skyline.begin(), skyline.end(),
-                            [&](Node* s) { return dominates(current, s); }), skyline.end());
-            skyline.push_back(current);
-        }
-    }
-    return skyline;
-}
-```
-### ⏱️ Pengukuran Performa:
-
-```
-auto start = std::chrono::high_resolution_clock::now();
-// proses skyline
-auto end = std::chrono::high_resolution_clock::now();
-std::chrono::duration<double> duration = end - start;
-```
-
-### output:
-
-![image](https://github.com/user-attachments/assets/02bc914e-fafe-42d7-aba3-12c06a91e8f9)
+### 💡 Keuntungan Penggunaan map
+Fitur | Keuntungan Menggunakan std::map
+📚 Urutan Berdasarkan Key | Data terurut otomatis berdasarkan label
+🔍 Akses Mudah dan Aman | Cek apakah suatu label sudah ada atau tidak
+🧩 Struktur Teratur | Mudah untuk ditampilkan dan ditelusuri
+🔁 Iterasi Teratur | Cocok untuk mencetak hasil yang rapi
 
 
-### 📊 Analisis Kompleksitas
->>Waktu: O(n²), karena setiap elemen dibandingkan dengan elemen lainnya.
->>Ruang: O(n), untuk menyimpan hasil skyline dan linked list.
+### ⏱️ Kompleksitas
+Penyisipan dan penghapusan: O(log N)
 
-### Namun, Linked List lebih efisien dibanding array atau queue pada kasus tertentu, karena:
->>Tidak ada alokasi ulang memori (seperti array)
->>Penghapusan node tidak perlu pergeseran data
->>Lebih ringan saat parsing dan pembuatan struktur data
+Pencarian berdasarkan key: O(log N)
 
-### ✅ Kesimpulan
->>Linked List cocok untuk implementasi skyline query dengan data ukuran besar karena efisiensi memori dan kemudahan traversal.
->> Dapat menghindari overhead struktural yang sering terjadi pada struktur data statik seperti array.
->> Performa sangat baik jika implementasi dilakukan dengan benar, seperti yang dibuktikan dengan waktu komputasi rendah dalam uji coba 1000 entri.
+Walaupun tidak secepat unordered_map (yang O(1) untuk rata-rata kasus), map menawarkan keuntungan keterurutan, yang cocok bila ingin hasil akhir tertata rapi (misalnya, saat menampilkan output ke pengguna).
+
+![Image](https://github.com/user-attachments/assets/1e40ddc2-afaf-497d-abc4-aed2f44c1369)
+
+### 📌 Kesimpulan Penggunaan Map
+Penggunaan std::map dalam implementasi Skyline Query ini memberikan manfaat berikut:
+
+Menyimpan hasil skyline secara terstruktur dan terurut.
+
+Mempermudah visualisasi dan debugging.
+
+Lebih stabil dan deterministik urutan hasil dibandingkan unordered_map.
+
+Cocok digunakan pada aplikasi yang membutuhkan output yang bisa ditebak urutannya, seperti laporan pengguna atau data statistik.
+
+
+
+
+# Analisis Performa Struktur Data untuk Skyline Query
+
+Dalam implementasi algoritma Skyline Query, enam struktur data yang digunakan untuk menyimpan dan memproses data adalah:
+
+- `Array`
+- `Stack`
+- `Queue`
+- `Linked List`
+- `Map` (`std::map`)
+- `Hash Table` (`std::unordered_map`)
+
+Setelah melakukan pengujian, ditemukan bahwa **Hash Table (unordered_map)** adalah yang tercepat, sedangkan **Map (std::map)** adalah yang paling lambat.
+
+---
+
 
 
 ## 🔍 Penjelasan Performa
