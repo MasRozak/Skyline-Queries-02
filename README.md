@@ -20,7 +20,32 @@ Array adalah struktur data yang digunakan untuk menyimpan sekumpulan elemen deng
 ### Fungsi Skyline Query dengan Array 
 Fungsi skylineQuery yang ada dalam kode ini bertujuan untuk melakukan skyline query terhadap sekumpulan produk, yang disimpan dalam array products. Tujuan dari skyline query adalah untuk memilih produk-produk yang tidak "didominasi" oleh produk lainnya, berdasarkan dua atribut: harga (attr1) dan nilai ulasan (attr2).
 
+```
+int skylineQuery(Product products[], int productCount, Product skyline[]) {
+    int skylineCount = 0;
 
+    for (int i = 0; i < productCount; ++i) {
+        bool isDominated = false;
+        for (int j = 0; j < productCount; ++j) {
+            if (i != j && dominates(products[j], products[i])) {
+                isDominated = true;
+                break;
+            }
+        }
+        if (!isDominated) {
+            skyline[skylineCount++] = products[i];
+        }
+    }
+
+    return skylineCount;
+}
+
+```
+Fungsi ini akan memeriksa setiap produk (i) dalam array products[], dan memeriksa apakah ada produk lain (j) yang mendominasi produk tersebut.
+Dominasi: Sebuah produk a dikatakan mendominasi produk b jika:
+- Atribut a.attr1 <= b.attr1 (harga a lebih kecil atau sama dengan harga b).
+- Atribut a.attr2 >= b.attr2 (nilai ulasan a lebih besar atau sama dengan nilai ulasan b).
+- salah satu dari atribut tersebut lebih baik dari atribut b (misalnya, harga lebih murah atau ulasan lebih tinggi).
 
 
 
