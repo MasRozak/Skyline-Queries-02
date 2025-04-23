@@ -17,6 +17,9 @@ Ada minimal satu atribut di mana A lebih baik dari B
 ### Apa Itu Array?
 Array adalah struktur data yang digunakan untuk menyimpan sekumpulan elemen dengan tipe data yang sama dalam satu blok memori, dan diakses menggunakan indeks.
 
+### Fungsi Skyline Query dengan Array 
+Fungsi skylineQuery yang ada dalam kode ini bertujuan untuk melakukan skyline query terhadap sekumpulan produk, yang disimpan dalam array products. Tujuan dari skyline query adalah untuk memilih produk-produk yang tidak "didominasi" oleh produk lainnya, berdasarkan dua atribut: harga (attr1) dan nilai ulasan (attr2).
+
 
 
 
