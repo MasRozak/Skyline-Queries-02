@@ -382,12 +382,12 @@ Efisien dalam Traversal: Skyline Query membutuhkan traversal terhadap seluruh da
 
 📄 Cuplikan Kode Implementasi:
 
->> bool dominates(Node* a, Node* b) {
+bool dominates(Node* a, Node* b) {
     return (a->attr1 <= b->attr1 && a->attr2 <= b->attr2) &&
            (a->attr1 < b->attr1 || a->attr2 < b->attr2);
 }
 
->> std::vector<Node*> skylineQuery(Node* head) {
+std::vector<Node*> skylineQuery(Node* head) {
     std::vector<Node*> skyline;
     for (Node* current = head; current != nullptr; current = current->next) {
         bool dominated = false;
@@ -408,7 +408,7 @@ Efisien dalam Traversal: Skyline Query membutuhkan traversal terhadap seluruh da
 
 ⏱️ Pengukuran Performa:
 
->> auto start = std::chrono::high_resolution_clock::now();
+auto start = std::chrono::high_resolution_clock::now();
 // proses skyline
 auto end = std::chrono::high_resolution_clock::now();
 std::chrono::duration<double> duration = end - start;
@@ -419,24 +419,18 @@ output:
 
 
 📊 Analisis Kompleksitas
-Waktu: O(n²), karena setiap elemen dibandingkan dengan elemen lainnya.
-
-Ruang: O(n), untuk menyimpan hasil skyline dan linked list.
+>>Waktu: O(n²), karena setiap elemen dibandingkan dengan elemen lainnya.
+>>Ruang: O(n), untuk menyimpan hasil skyline dan linked list.
 
 Namun, Linked List lebih efisien dibanding array atau queue pada kasus tertentu, karena:
-
-Tidak ada alokasi ulang memori (seperti array)
-
-Penghapusan node tidak perlu pergeseran data
-
-Lebih ringan saat parsing dan pembuatan struktur data
+>>Tidak ada alokasi ulang memori (seperti array)
+>>Penghapusan node tidak perlu pergeseran data
+>>Lebih ringan saat parsing dan pembuatan struktur data
 
 ✅ Kesimpulan
-Linked List cocok untuk implementasi skyline query dengan data ukuran besar karena efisiensi memori dan kemudahan traversal.
-
-Dapat menghindari overhead struktural yang sering terjadi pada struktur data statik seperti array.
-
-Performa sangat baik jika implementasi dilakukan dengan benar, seperti yang dibuktikan dengan waktu komputasi rendah dalam uji coba 1000 entri.
+>>Linked List cocok untuk implementasi skyline query dengan data ukuran besar karena efisiensi memori dan kemudahan traversal.
+>> Dapat menghindari overhead struktural yang sering terjadi pada struktur data statik seperti array.
+>> Performa sangat baik jika implementasi dilakukan dengan benar, seperti yang dibuktikan dengan waktu komputasi rendah dalam uji coba 1000 entri.
 
 
 ## 🔍 Penjelasan Performa
