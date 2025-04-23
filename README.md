@@ -357,6 +357,7 @@ Queue lebih efisien digunakan untuk data berukuran kecil sampai menengah dan kur
 
 
 📝 Implementasi Skyline Query Menggunakan Linked List
+
 📌 Deskripsi Proyek
 Skyline Query merupakan metode untuk menemukan entitas-entitas terbaik (tidak terdominasi) dalam sebuah dataset berdasarkan beberapa kriteria. Pada studi kasus ini, kita mencari produk baju terbaik dari dataset berisi 1000 entri berdasarkan dua atribut:
 
@@ -382,11 +383,14 @@ Efisien dalam Traversal: Skyline Query membutuhkan traversal terhadap seluruh da
 
 📄 Cuplikan Kode Implementasi:
 
+```
 bool dominates(Node* a, Node* b) {
     return (a->attr1 <= b->attr1 && a->attr2 <= b->attr2) &&
            (a->attr1 < b->attr1 || a->attr2 < b->attr2);
 }
+```
 
+```
 std::vector<Node*> skylineQuery(Node* head) {
     std::vector<Node*> skyline;
     for (Node* current = head; current != nullptr; current = current->next) {
@@ -405,13 +409,15 @@ std::vector<Node*> skylineQuery(Node* head) {
     }
     return skyline;
 }
-
+```
 ⏱️ Pengukuran Performa:
 
+```
 auto start = std::chrono::high_resolution_clock::now();
 // proses skyline
 auto end = std::chrono::high_resolution_clock::now();
 std::chrono::duration<double> duration = end - start;
+```
 
 output:
 
