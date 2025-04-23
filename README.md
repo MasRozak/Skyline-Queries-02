@@ -135,6 +135,139 @@ std::chrono::duration<double> duration = end - start;
 >> Dapat menghindari overhead struktural yang sering terjadi pada struktur data statik seperti array.
 >> Performa sangat baik jika implementasi dilakukan dengan benar, seperti yang dibuktikan dengan waktu komputasi rendah dalam uji coba 1000 entri.
 
+## 3. 📊 Penggunaan Stack pada Algoritma Skyline Query
+
+### 📚 Pengertian Stack
+*Stack* adalah struktur data yang mengikuti prinsip *Last In First Out (LIFO)*. Artinya, data yang terakhir dimasukkan akan menjadi yang pertama dikeluarkan. Stack bisa dianalogikan seperti tumpukan buku atau piring: yang terakhir diletakkan akan diambil lebih dahulu.
+
+Stack digunakan dalam algoritma ini untuk menyimpan sementara produk-produk yang berpotensi menjadi bagian dari hasil akhir (skyline).
+
+---
+
+### 👕 Studi Kasus: Data Produk Baju
+
+Dalam kasus ini, setiap objek product memiliki dua atribut utama:
+
+- *Harga* (atr_1) – Semakin rendah semakin baik.
+- *Rating* (atr_2) – Semakin tinggi semakin baik.
+
+---
+
+### 🌟 Aturan Dominasi
+
+Produk A dikatakan *mendominasi* produk B jika:
+- A.harga <= B.harga, dan
+- A.rating >= B.rating, dan
+- *Setidaknya salah satu atribut lebih baik secara ketat*
+
+---
+
+### 🔧 Fungsi Skyline Query dengan Stack
+
+cpp
+vector<product> skyline_with_stack(const vector<product>& items) {
+    stack<product> st;
+
+    for (const auto& item : items) {
+        stack<product> temp;
+        bool isDominated = false;
+
+        while (!st.empty()) {
+            product top = st.top(); st.pop();
+
+            if (dominates(top, item)) {
+                isDominated = true;
+                temp.push(top);
+            }
+            else if (dominates(item, top)) {
+                continue;
+            }
+            else {
+                temp.push(top);
+            }
+        }
+
+        if (!isDominated) {
+            temp.push(item);
+        }
+
+        while (!temp.empty()) {
+            st.push(temp.top()); temp.pop();
+        }
+    }
+
+    vector<product> sky;
+    while (!st.empty()) {
+        sky.push_back(st.top());
+        st.pop();
+    }
+    return sky;
+}
+
+
+---
+
+### 🔄 Proses Algoritma
+
+1. Inisialisasi stack kosong.
+2. Iterasi semua produk.
+3. Bandingkan satu per satu dengan isi stack:
+   - Jika item didominasi → abaikan.
+   - Jika item mendominasi isi stack → hapus yang kalah.
+   - Jika tidak saling mendominasi → pertahankan keduanya.
+4. Tambahkan item jika tidak didominasi.
+5. Setelah selesai, pindahkan isi stack ke vector<product> sebagai hasil akhir.
+
+---
+
+### 🧠 Logika Kode Inti
+
+cpp
+if (!isDominated) {
+    temp.push(item);
+}
+while (!temp.empty()) {
+    st.push(temp.top());
+    temp.pop();
+}
+
+
+Kode di atas menunjukkan bahwa produk item hanya akan dimasukkan ke dalam skyline jika tidak didominasi oleh produk lain. Stack sementara temp digunakan untuk menjaga urutan perbandingan sebelum dikembalikan ke stack utama st.
+
+---
+
+### 🖼 Output Program
+
+![Image](https://github.com/user-attachments/assets/d133dd92-6a6e-4471-a694-225f9b6e2f64)
+...
+
+
+---
+
+### ✅ Kelebihan Menggunakan Stack
+
+| Fitur | Penjelasan |
+|-------|------------|
+| Sederhana | Mudah dipahami dan diimplementasikan |
+| Tidak membutuhkan sorting | Data bisa langsung diproses tanpa diurutkan dulu |
+| Langsung menyaring produk terbaik | Proses iteratif langsung membandingkan produk |
+
+---
+
+### ❌ Kelemahan Menggunakan Stack
+
+| Fitur | Penjelasan |
+|-------|------------|
+| Tidak mempertahankan urutan input | Produk hasil skyline bisa acak |
+| Kompleksitas tinggi | Karena perbandingan berulang, kompleksitas jadi O(n²) |
+| Kurang optimal untuk data besar | Lambat saat jumlah data sangat banyak |
+
+---
+
+### 📌 Kesimpulan
+Implementasi Skyline Query menggunakan Stack berhasil menyaring produk-produk yang tidak terdominasi berdasarkan kombinasi harga dan rating. Algoritma ini bekerja dengan prinsip LIFO (Last In, First Out) untuk membandingkan setiap produk dengan produk yang sudah ada di stack, dan hanya menyimpan produk yang terbaik. Meskipun hasilnya efektif untuk dataset kecil, kompleksitas O(n²) membuatnya kurang efisien untuk jumlah data yang sangat besar. Stack memberikan cara yang sederhana dan terstruktur untuk memproses data skyline, namun efisiensinya perlu diperhatikan pada dataset besar.
+
+---
 
 ## 📊 4. Penjelasan Penggunaan Hash Table dalam Algoritma Skyline Query
 
