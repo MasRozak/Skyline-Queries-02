@@ -98,6 +98,7 @@ Output tersebut menunjukkan produk-produk yang paling kompetitif, yaitu:
 - Harga tinggi tapi dengan ulasan yang sangat tinggi, atau
 - Harga sangat murah walau ulasan cukup, dllaik.
 
+---
 
 ## 📝 2. Implementasi Skyline Query Menggunakan Linked List
 
@@ -169,7 +170,7 @@ std::chrono::duration<double> duration = end - start;
 
 ### output:
 
-![alt text](image-1.png)
+![alt text](image-2.png)
 
 
 ### 📊 Analisis Kompleksitas
@@ -198,7 +199,9 @@ Linked List cocok untuk implementasi skyline query dengan data ukuran besar kare
 
 3. Performa sangat baik jika implementasi dilakukan dengan benar, seperti yang dibuktikan dengan waktu komputasi rendah dalam uji coba 1000 entri.
 
-4. Memberikan performa sangat baik, dibuktikan dengan waktu eksekusi rata-rata di bawah 0.03 ms per iterasi.
+4. Memberikan performa yang cukup baik
+
+---
 
 ## 3. 📊 Penggunaan Stack pada Algoritma Skyline Query
 
