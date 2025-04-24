@@ -127,7 +127,7 @@ int main() {
 
     std::cout << std::fixed << std::setprecision(6);
 
-    std::cout << "\nWaktu komputasi " << ITERATIONS << " iterasi): "
+    std::cout << "\nWaktu komputasi (rata-rata " << ITERATIONS << " iterasi): "
               << total_duration_ms  << " ms\n";
 
     freeList(head);
