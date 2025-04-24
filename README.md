@@ -28,6 +28,51 @@ Ada minimal satu atribut di mana A lebih baik dari B
 ### Apa Itu Array?
 Array adalah struktur data yang digunakan untuk menyimpan sekumpulan elemen dengan tipe data yang sama dalam satu blok memori, dan diakses menggunakan indeks.
 
+### 📦 Kenapa Pakai Array?
+
+1. Kita ingin menyimpan banyak data dalam satu nama variabel.
+2. Kita bisa mengakses semua data itu dengan loop (for/while).
+3. Ukuran data bisa tetap (fixed size) dan aksesnya cepat.
+
+### 🔁 Cara Kerja skylineQuery() dengan Array 
+1. Iterasi semua produk
+~~~
+for (int i = 0; i < productCount; ++i) {
+~~~
+Kita ambil satu per satu produk dari array products[], indeks i.
+
+2. Cek apakah produk i didominasi oleh produk lain
+~~~
+    bool isDominated = false;
+    for (int j = 0; j < productCount; ++j) {
+        if (i != j && dominates(products[j], products[i])) {
+            isDominated = true;
+            break;
+        }
+    }
+~~~
+Loop dalam (nested loop) membandingkan produk (i) dengan semua produk lain (j) dalam array products[].
+
+Disini juga digunakan fungsi dominates(a, b) yang artinya:
+~~~
+bool dominates(const Product &a, const Product &b) {
+    return (a.attr1 <= b.attr1 && a.attr2 >= b.attr2) &&
+           (a.attr1 < b.attr1 || a.attr2 > b.attr2);
+}
+~~~
+Kalau produk j mengalahkan i, maka isDominated = true.
+Jadi di sini array mempermudah perbandingan langsung antar elemen pakai indeks [i] dan [j].
+
+3. Simpan ke skyline[] jika tidak didominasi
+~~~
+if (!isDominated) {
+            skyline[skylineCount++] = products[i];
+        }
+~~~
+Kalau produk i lolos (tidak didominasi):
+- Disalin ke array skyline[] di indeks ke skylineCount.
+- Counter skylineCount dinaikkan untuk posisi berikutnya.
+
 ### Fungsi Skyline Query dengan Array 
 Fungsi skylineQuery yang ada dalam kode ini bertujuan untuk melakukan skyline query terhadap sekumpulan produk, yang disimpan dalam array products. Tujuan dari skyline query adalah untuk memilih produk-produk yang tidak "didominasi" oleh produk lainnya, berdasarkan dua atribut: harga (attr1) dan nilai ulasan (attr2).
 
