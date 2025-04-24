@@ -99,6 +99,7 @@ int main() {
 
     const int ITERATIONS = 1000;
     double total_duration_ns = 0.0;
+    double total_duration_ms = 0.0;
 
     for (int i = 0; i < ITERATIONS; ++i) {
         auto start = std::chrono::high_resolution_clock::now();
@@ -107,6 +108,8 @@ int main() {
 
         auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
         total_duration_ns += duration.count();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+        total_duration_ms += duration.count();
     }
 
     // Hasil akhir satu kali komputasi untuk ditampilkan ke layar
@@ -129,6 +132,10 @@ int main() {
     std::cout << "\nWaktu komputasi (rata-rata " << ITERATIONS << " iterasi): "
               << avg_duration_ms << " ms | "
               << avg_duration_s  << " s\n";
+    // double duration_ms = avg_duration_ns / 1e6 * 1000;
+
+    std::cout << "\nWaktu komputasi " << ITERATIONS << " iterasi): "
+              << total_duration_ms  << " ms\n";
 
     freeList(head);
     return 0;
