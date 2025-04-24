@@ -56,7 +56,7 @@ vector<Baju> skylineQueryHashTable(const vector<Baju>& data) {
 
 int main() {
     vector<Baju> dataset;
-    ifstream file("ind_1000_2_product.csv");
+    ifstream file("../materials/ind_1000_2_product.csv");
     string line;
 
     getline(file, line);
