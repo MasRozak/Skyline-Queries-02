@@ -73,40 +73,30 @@ Kalau produk i lolos (tidak didominasi):
 - Disalin ke array skyline[] di indeks ke skylineCount.
 - Counter skylineCount dinaikkan untuk posisi berikutnya.
 
-### Fungsi Skyline Query dengan Array 
-Fungsi skylineQuery yang ada dalam kode ini bertujuan untuk melakukan skyline query terhadap sekumpulan produk, yang disimpan dalam array products. Tujuan dari skyline query adalah untuk memilih produk-produk yang tidak "didominasi" oleh produk lainnya, berdasarkan dua atribut: harga (attr1) dan nilai ulasan (attr2).
-
+### Bagaimana Performa Diukur di Kode Ini? 
+Performa dihitung dengan cara mengukur waktu eksekusi dari proses utama:
 ```
-int skylineQuery(Product products[], int productCount, Product skyline[]) {
-    int skylineCount = 0;
-
-    for (int i = 0; i < productCount; ++i) {
-        bool isDominated = false;
-        for (int j = 0; j < productCount; ++j) {
-            if (i != j && dominates(products[j], products[i])) {
-                isDominated = true;
-                break;
-            }
-        }
-        if (!isDominated) {
-            skyline[skylineCount++] = products[i];
-        }
-    }
-
-    return skylineCount;
-}
-
+auto start = high_resolution_clock::now();
+// proses: baca file CSV dan eksekusi skyline query
+auto end = high_resolution_clock::now();
+auto duration = duration_cast<milliseconds>(end - start);
 ```
-1. Fungsi ini akan memeriksa setiap produk (i) dalam array products[], dan memeriksa apakah ada produk lain (j) yang mendominasi produk tersebut.
+- high_resolution_clock::now() mencatat waktu saat program mulai dan selesai menjalankan proses utama.
+- duration_cast<milliseconds> menghitung selisih waktunya dalam milidetik.
 
-2. Dominasi: Sebuah produk a dikatakan mendominasi produk b jika:
-- Atribut a.attr1 <= b.attr1 (harga a lebih kecil atau sama dengan harga b).
-- Atribut a.attr2 >= b.attr2 (nilai ulasan a lebih besar atau sama dengan nilai ulasan b).
-- salah satu dari atribut tersebut lebih baik dari atribut b (misalnya, harga lebih murah atau ulasan lebih tinggi).
+Lalu hasilnya ditampilkan:
+```
+cout << "\nWaktu komputasi: " << duration.count() << " ms\n";
+```
+
+
 
 ### Berikut Output Array Menggunakan Data 1000 Baju
 ![Screenshot 2025-04-23 233802](https://github.com/user-attachments/assets/19cfa8f6-cb30-4628-aa9f-8ff20398ca01)
-Output pada gambar tersebut menampilkan daftar produk pakaian ("Skyline Products (Baju Terbaik)") yang telah dipilih atau diurutkan berdasarkan performa ulasan terbaik.
+Output tersebut menunjukkan produk-produk yang paling kompetitif, yaitu:
+- Harga murah tapi ulasan tinggi, atau
+- Harga tinggi tapi dengan ulasan yang sangat tinggi, atau
+- Harga sangat murah walau ulasan cukup, dllaik.
 
 
 ## 📝 2. Implementasi Skyline Query Menggunakan Linked List
