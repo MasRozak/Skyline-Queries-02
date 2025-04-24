@@ -2,19 +2,21 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-#include <chrono>
 #include <algorithm>
 #include <string>
+#include <chrono>
+#include <iomanip>
 
 struct Node {
     int id;
-    int attr1;
-    int attr2;
+    std::string label;
+    int harga;
+    int ulasan;
     Node* next;
 };
 
-Node* insert(Node* head, int id, int attr1, int attr2) {
-    Node* newNode = new Node{id, attr1, attr2, nullptr};
+Node* insert(Node* head, int id, const std::string& label, int harga, int ulasan) {
+    Node* newNode = new Node{id, label, harga, ulasan, nullptr};
     if (!head) return newNode;
 
     Node* temp = head;
@@ -24,8 +26,8 @@ Node* insert(Node* head, int id, int attr1, int attr2) {
 }
 
 bool dominates(Node* a, Node* b) {
-    return (a->attr1 <= b->attr1 && a->attr2 <= b->attr2) &&
-           (a->attr1 < b->attr1 || a->attr2 < b->attr2);
+    return (a->harga <= b->harga && a->ulasan >= b->ulasan) &&
+           (a->harga < b->harga || a->ulasan > b->ulasan);
 }
 
 std::vector<Node*> skylineQuery(Node* head) {
@@ -62,22 +64,21 @@ Node* readCSV(const std::string& filename) {
         }
 
         std::stringstream ss(line);
-        std::string idStr, labelStr, attr1Str, attr2Str;
+        std::string idStr, labelStr, hargaStr, ulasanStr;
 
-        // Sesuai urutan: id, label, attr1, attr2
         if (!std::getline(ss, idStr, ',') ||
             !std::getline(ss, labelStr, ',') ||
-            !std::getline(ss, attr1Str, ',') ||
-            !std::getline(ss, attr2Str, ',')) {
+            !std::getline(ss, hargaStr, ',') ||
+            !std::getline(ss, ulasanStr, ',')) {
             std::cerr << "Baris tidak lengkap, dilewati: " << line << "\n";
             continue;
         }
 
         try {
             int id = std::stoi(idStr);
-            int attr1 = std::stoi(attr1Str);
-            int attr2 = std::stoi(attr2Str);
-            head = insert(head, id, attr1, attr2);
+            int harga = std::stoi(hargaStr);
+            int ulasan = std::stoi(ulasanStr);
+            head = insert(head, id, labelStr, harga, ulasan);
         } catch (const std::exception& e) {
             std::cerr << "Gagal parse baris: " << line << " - " << e.what() << "\n";
         }
@@ -85,23 +86,50 @@ Node* readCSV(const std::string& filename) {
     return head;
 }
 
+void freeList(Node* head) {
+    while (head) {
+        Node* temp = head;
+        head = head->next;
+        delete temp;
+    }
+}
 
 int main() {
-    Node* head = readCSV("ind_1000_2_product.csv");
+    Node* head = readCSV("../materials/ind_1000_2_product.csv");
 
-    auto start = std::chrono::high_resolution_clock::now();
+    const int ITERATIONS = 1000;
+    double total_duration_ns = 0.0;
 
-    std::vector<Node*> skyline = skylineQuery(head);
+    for (int i = 0; i < ITERATIONS; ++i) {
+        auto start = std::chrono::high_resolution_clock::now();
+        std::vector<Node*> skyline = skylineQuery(head);
+        auto end = std::chrono::high_resolution_clock::now();
 
-    auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> duration = end - start;
-
-    std::cout << "Skyline Items:\n";
-    for (auto node : skyline) {
-        std::cout << "ID: " << node->id << ", Attr1: " << node->attr1
-                  << ", Attr2: " << node->attr2 << "\n";
+        auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start);
+        total_duration_ns += duration.count();
     }
 
-    std::cout << "\nWaktu Komputasi: " << duration.count() << " detik\n";
+    // Hasil akhir satu kali komputasi untuk ditampilkan ke layar
+    std::vector<Node*> finalSkyline = skylineQuery(head);
+
+    std::cout << "Skyline Products (Baju Terbaik):\n";
+    for (auto node : finalSkyline) {
+        std::cout << "ID: " << node->id
+                  << ", Label: " << node->label
+                  << ", Harga: " << node->harga
+                  << ", Nilai Ulasan: " << node->ulasan << "\n";
+    }
+
+    // Hitung rata-rata waktu
+    double avg_duration_ns = total_duration_ns / ITERATIONS;
+    double avg_duration_ms = avg_duration_ns / 1e6;
+    double avg_duration_s  = avg_duration_ns / 1e9;
+
+    std::cout << std::fixed << std::setprecision(6);
+    std::cout << "\nWaktu komputasi (rata-rata " << ITERATIONS << " iterasi): "
+              << avg_duration_ms << " ms | "
+              << avg_duration_s  << " s\n";
+
+    freeList(head);
     return 0;
 }
