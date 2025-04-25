@@ -112,7 +112,7 @@ int main() {
              << ", Rating: " << it->second.rating << endl;
     }
 
-    std::cout << "\nWaktu komputasi: " <<  duration_cast<microseconds>(end - start).count() << " ms\n";
+    std::cout << "\nWaktu komputasi Map: " <<  duration_cast<microseconds>(end - start).count() << " us\n";
 
     return 0;
 }

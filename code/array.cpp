@@ -97,7 +97,7 @@ int main() {
              << ", Nilai Ulasan: " << skyline[i].attr2 << "\n";
     }
 
-    cout << "\nWaktu komputasi: " <<  duration_cast<microseconds>(end - start).count() << " ms\n";
+    cout << "\nWaktu komputasi Array: " <<  duration_cast<microseconds>(end - start).count() << " us\n";
 
     return 0;
 }

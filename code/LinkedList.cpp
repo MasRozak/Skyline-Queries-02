@@ -118,7 +118,7 @@ int main() {
                   << ", Nilai Ulasan: " << node->ulasan << "\n";
     }
 
-    std::cout << "\nWaktu komputasi: " <<  duration_cast<microseconds>(end - start).count() << " ms\n";
+    std::cout << "\nWaktu komputasi Linked List: " <<  duration_cast<microseconds>(end - start).count() << " us\n";
 
     freeList(head);
     return 0;

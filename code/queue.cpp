@@ -133,7 +133,7 @@ int main() {
 
     cout << "=== Hasil Skyline ===\n";
     print_table(sky);
-    cout << "\nWaktu komputasi: " <<  duration_cast<microseconds>(t1 - t0).count() << " ms\n";
+    cout << "\nWaktu komputasi Queue: " <<  duration_cast<microseconds>(t1 - t0).count() << " us\n";
 
 
 

@@ -114,7 +114,7 @@ int main() {
                   << ", Harga: " << p.harga << ", Rating: " << p.rating << "\n";
     }
 
-    cout << "\nWaktu komputasi: " <<  duration_cast<microseconds>(end - start).count() << " ms\n";
+    cout << "\nWaktu komputasi Stack: " <<  duration_cast<microseconds>(end - start).count() << " us\n";
 
     return 0;
 }
