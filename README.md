@@ -86,7 +86,7 @@ auto duration = duration_cast<milliseconds>(end - start);
 
 Lalu hasilnya ditampilkan:
 ```
-cout << "\nWaktu komputasi: " << duration.count() << " ms\n";
+    cout << "\nWaktu komputasi Array: " <<  duration_cast<microseconds>(end - start).count() << " us\n";
 ```
 
 
