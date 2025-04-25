@@ -571,8 +571,8 @@ Output dari program ini adalah sembilan produk yang saling incomparable. Input y
 |------------------------|----------------------------------------------------------------------------|
 | 🕐 FIFO               | Menjamin urutan evaluasi sesuai data masuk, cocok untuk data streaming atau real-time |
 | ♻️ Pop–Compare–Push Cycle  | Memudahkan proses pengecekan dominasi antar produk satu per satu secara efisien         |
-| 🧠 Memori Efisien        | Hanya menyimpan kandidat produk skyline, tidak perlu menyimpan seluruh dataset         |
-| ✅ Deteksi Dominasi Mudah | Queue memungkinkan pengecekan dominasi secara langsung dan iteratif                      |
+| 🧠 Efisiensi Memori        | Hanya menyimpan kandidat produk skyline, tidak perlu menyimpan seluruh dataset         |
+| ✅ Easy Dominate Detection | Queue memungkinkan pengecekan dominasi secara langsung dan iteratif                      |
 
 📍 **Kesimpulan:**
 Queue lebih efisien digunakan untuk data berukuran kecil sampai menengah dan kurang cocok apabila digunakan untuk data berukuran besar dikarenakan kompleksitasnya **O(n²)**.
