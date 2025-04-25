@@ -82,7 +82,7 @@ auto end = high_resolution_clock::now();
 auto duration = duration_cast<milliseconds>(end - start);
 ```
 - high_resolution_clock::now() mencatat waktu saat program mulai dan selesai menjalankan proses utama.
-- duration_cast<milliseconds> menghitung selisih waktunya dalam milidetik.
+- duration_cast<milliseconds> menghitung selisih waktunya.
 
 Lalu hasilnya ditampilkan:
 ```
