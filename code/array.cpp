@@ -4,11 +4,12 @@
 #include <string>
 #include <chrono>
 #include <cstdlib>
+#include "../materials/timer.hpp"
 
 using namespace std;
 using namespace chrono;
 
-const int MAX_PRODUCTS = 2000; // batas maksimal produk
+const int MAX_PRODUCTS = 1000; // batas maksimal produk
 
 struct Product {
     int id;
@@ -57,8 +58,10 @@ int readCSV(const string &filename, Product products[]) {
     return count;
 }
 
-int skylineQuery(Product products[], int productCount, Product skyline[]) {
+int skylineQuery(Product products[], int productCount, Product skyline[], double* duration) {
     int skylineCount = 0;
+
+    auto start = high_resolution_clock::now();
 
     for (int i = 0; i < productCount; ++i) {
         bool isDominated = false;
@@ -72,23 +75,25 @@ int skylineQuery(Product products[], int productCount, Product skyline[]) {
             skyline[skylineCount++] = products[i];
         }
     }
-
+    auto end = high_resolution_clock::now();
+    auto elapsed = duration_cast<microseconds>(end - start); // << ganti ini
+    *duration = elapsed.count() / 1000.0; // << convert ke ms dengan koma
     return skylineCount;
 }
 
 int main() {
-    string filename = "ind_1000_2_product.csv";
+    string filename = "../materials/ind_1000_2_product.csv";
     Product products[MAX_PRODUCTS];
     Product skyline[MAX_PRODUCTS];
-
-    auto start = high_resolution_clock::now();
+    
 
     int productCount = readCSV(filename, products);
-    int skylineCount = skylineQuery(products, productCount, skyline);
-
+    double t;
+    auto start = high_resolution_clock::now();
+    int skylineCount = skylineQuery(products, productCount, skyline, &t);
     auto end = high_resolution_clock::now();
-    auto duration = duration_cast<milliseconds>(end - start);
 
+    duration<double> waktu = end - start;
     cout << "Skyline Products (Baju Terbaik):\n";
     for (int i = 0; i < skylineCount; ++i) {
         cout << "ID: " << skyline[i].id
@@ -97,8 +102,7 @@ int main() {
              << ", Nilai Ulasan: " << skyline[i].attr2 << "\n";
     }
 
-    cout << "\nWaktu komputasi: " << duration.count() << " ms\n";
+    cout << "\nWaktu komputasi: " << t << " ms\n";
 
     return 0;
 }
-

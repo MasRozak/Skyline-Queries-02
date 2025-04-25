@@ -6,6 +6,7 @@
 #include <iomanip>
 #include <queue>
 #include <chrono>
+#include "../materials/timer.hpp"
 
 using namespace std;
 struct product{
@@ -134,8 +135,8 @@ int main() {
     cout << "=== Hasil Skyline ===\n";
     print_table(sky);
     cout << "Waktu komputasi skyline: " 
-         << fixed << setprecision(3) << elapsed 
-         << " detik\n";
+         << fixed << setprecision(3) << elapsed * 1000
+         << " ms\n";
 
 
     return 0;

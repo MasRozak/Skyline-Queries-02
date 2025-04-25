@@ -6,6 +6,7 @@
 #include <string>
 #include <chrono>
 #include <iomanip>
+#include "../materials/timer.hpp"
 
 struct Node {
     int id;

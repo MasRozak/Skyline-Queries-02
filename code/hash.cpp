@@ -6,6 +6,7 @@
 #include <chrono>
 #include <string>
 #include <bits/stdc++.h>
+#include "../materials/timer.hpp"
 
 using namespace std;
 using namespace chrono;
@@ -87,12 +88,13 @@ int main() {
     auto end = high_resolution_clock::now();
 
     duration<double> durasi = end - start;
-    cout << "Waktu eksekusi skylineQueryHashTable: " << durasi.count() << " detik\n";
 
     cout << "Hasil Skyline (ID, Harga, Rating):\n";
     for (const auto& b : hasilSkyline) {
         cout << "ID: " << b.id << ", Harga: " << b.harga << ", Rating: " << b.rating << '\n';
     }
+    
+    cout << "Waktu eksekusi Hash Table: " << durasi.count() * 1000 << " ms\n";
 
     return 0;
 }

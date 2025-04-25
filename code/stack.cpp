@@ -5,10 +5,13 @@
 #include <vector>
 #include <string>
 #include <chrono>
+#include "../materials/timer.hpp"
+
+using namespace std;
 
 struct Product {
     int id;
-    std::string label;
+    string label;
     int harga;
     int rating;
 };
@@ -18,49 +21,49 @@ bool dominates(const Product& a, const Product& b) {
            (a.harga < b.harga || a.rating > b.rating);
 }
 
-std::vector<Product> readCSV(const std::string& filename) {
-    std::ifstream file(filename);
-    std::string line;
-    std::vector<Product> products;
+vector<Product> readCSV(const string& filename) {
+    ifstream file(filename);
+    string line;
+    vector<Product> products;
 
     if (!file.is_open()) {
-        std::cerr << "Gagal membuka file.\n";
+        cerr << "Gagal membuka file.\n";
         return products;
     }
 
-    std::getline(file, line);
+    getline(file, line);
 
-    while (std::getline(file, line)) {
-        std::stringstream ss(line);
-        std::string idStr, labelStr, hargaStr, ratingStr;
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string idStr, labelStr, hargaStr, ratingStr;
 
-        if (!std::getline(ss, idStr, ',') ||
-            !std::getline(ss, labelStr, ',') ||
-            !std::getline(ss, hargaStr, ',') ||
-            !std::getline(ss, ratingStr, ',')) {
+        if (!getline(ss, idStr, ',') ||
+            !getline(ss, labelStr, ',') ||
+            !getline(ss, hargaStr, ',') ||
+            !getline(ss, ratingStr, ',')) {
             continue;
         }
 
         try {
             Product p;
-            p.id = std::stoi(idStr);
+            p.id = stoi(idStr);
             p.label = labelStr;
-            p.harga = std::stoi(hargaStr);
-            p.rating = std::stoi(ratingStr);
+            p.harga = stoi(hargaStr);
+            p.rating = stoi(ratingStr);
             products.push_back(p);
         } catch (...) {
-            std::cerr << "Baris tidak valid: " << line << "\n";
+            cerr << "Baris tidak valid: " << line << "\n";
         }
     }
 
     return products;
 }
 
-std::vector<Product> skylineQueryWithStack(const std::vector<Product>& products) {
-    std::stack<Product> skylineStack;
+vector<Product> skylineQueryWithStack(const vector<Product>& products) {
+    stack<Product> skylineStack;
 
     for (const auto& p : products) {
-        std::stack<Product> tempStack;
+        stack<Product> tempStack;
         bool isDominated = false;
 
         while (!skylineStack.empty()) {
@@ -86,7 +89,7 @@ std::vector<Product> skylineQueryWithStack(const std::vector<Product>& products)
         }
     }
 
-    std::vector<Product> result;
+    vector<Product> result;
     while (!skylineStack.empty()) {
         result.push_back(skylineStack.top());
         skylineStack.pop();
@@ -95,23 +98,23 @@ std::vector<Product> skylineQueryWithStack(const std::vector<Product>& products)
 }
 
 int main() {
-    std::string filename = "ind_1000_2_product.csv";
-    std::vector<Product> products = readCSV(filename);
+    string filename = "../materials/ind_1000_2_product.csv";
+    vector<Product> products = readCSV(filename);
 
-    auto start = std::chrono::high_resolution_clock::now();
+    auto start = chrono::high_resolution_clock::now();
 
-    std::vector<Product> skyline = skylineQueryWithStack(products);
+    vector<Product> skyline = skylineQueryWithStack(products);
 
-    auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> duration = end - start;
+    auto end = chrono::high_resolution_clock::now();
+    chrono::duration<double> duration = end - start;
 
-    std::cout << "Skyline Result (via Stack):\n";
+    cout << "Skyline Result (via Stack):\n";
     for (const auto& p : skyline) {
-        std::cout << "ID: " << p.id << ", Label: " << p.label
+        cout << "ID: " << p.id << ", Label: " << p.label
                   << ", Harga: " << p.harga << ", Rating: " << p.rating << "\n";
     }
 
-    std::cout << "\nWaktu Komputasi: " << duration.count() << " detik\n";
+    cout << "\nWaktu Komputasi: " << duration.count() * 1000 << " ms\n";
 
     return 0;
 }
