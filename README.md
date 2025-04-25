@@ -92,7 +92,9 @@ Lalu hasilnya ditampilkan:
 
 
 ### Berikut Output Array Menggunakan Data 1000 Baju
-![Screenshot 2025-04-23 233802](https://github.com/user-attachments/assets/19cfa8f6-cb30-4628-aa9f-8ff20398ca01)
+
+![Image](https://github.com/user-attachments/assets/b0d4ddd7-d015-420c-a5f3-eae6bf569b13)
+
 Output tersebut menunjukkan produk-produk yang paling kompetitif, yaitu:
 - Harga murah tapi ulasan tinggi, atau
 - Harga tinggi tapi dengan ulasan yang sangat tinggi, atau
@@ -170,8 +172,7 @@ std::chrono::duration<double> duration = end - start;
 
 ### output:
 
-![image](image-2.png)
-
+![Image](https://github.com/user-attachments/assets/652bb2ea-d28d-40ec-8495-5a1092153f5d)
 
 ### 📊 Analisis Kompleksitas
 1. Waktu: O(n²), karena setiap elemen dibandingkan dengan elemen lainnya.
@@ -306,8 +307,7 @@ Kode di atas menunjukkan bahwa produk item hanya akan dimasukkan ke dalam skylin
 
 ### 🖼 Output Program
 
-![Image](https://github.com/user-attachments/assets/d133dd92-6a6e-4471-a694-225f9b6e2f64)
-...
+![Image](https://github.com/user-attachments/assets/c7f11b54-b21d-421c-ac9f-e54841e60cb1)
 
 
 ---
@@ -401,7 +401,7 @@ Pada potongan kode inti tersebut, program akan mengecek apakah produk saat ini *
 
 Adapun output dari program tersebut setelah menganalisis dataset yang telah diberikan sebagai berikut: (menggunakan data 1000 baju)
 
-![hash](https://github.com/user-attachments/assets/e1a9edd6-3481-4fa3-9ab1-8d61ceaf7432)
+![Image](https://github.com/user-attachments/assets/857f8a22-57a4-410e-acc5-fcfcc89eb5c1)
 
 Output tersebut menunjukkan 9 produk baju yang tidak didominasi oleh produk lain dalam hal kombinasi harga dan rating. Artinya, produk-produk tersebut merupakan produk terbaik dalam dataset yang telah diberikan, berikut 2 contoh alasannya:
 - Produk ID 964 (Harga 5, Rating 195) tidak didominasi oleh produk lain karena memiliki harga terendah.
@@ -564,7 +564,7 @@ Hasil akhir: `sky` berisi produk-produk skyline yang **saling incomparable** yai
 
 🔳 **Output:**  
 Output dari program ini adalah sembilan produk yang saling incomparable. Input yang digunakan adalah file .csv yang berisi 1000 data produk baju.  
-  ![Image](https://github.com/user-attachments/assets/a1b37831-9ae7-4427-820a-04658898f553)
+  ![Image](https://github.com/user-attachments/assets/bf6faf32-6af5-42a1-8287-fef7cc5bfd84)
 
 📍 **Kesimpulan:**
 Queue lebih efisien digunakan untuk data berukuran kecil sampai menengah dan kurang cocok apabila digunakan untuk data berukuran besar dikarenakan kompleksitasnya **O(n²)**.
@@ -613,7 +613,7 @@ Pencarian berdasarkan key: O(log N)
 
 Walaupun tidak secepat unordered_map (yang O(1) untuk rata-rata kasus), map menawarkan keuntungan keterurutan, yang cocok bila ingin hasil akhir tertata rapi (misalnya, saat menampilkan output ke pengguna).
 
-![Image](https://github.com/user-attachments/assets/1e40ddc2-afaf-497d-abc4-aed2f44c1369)
+![Image](https://github.com/user-attachments/assets/7a220236-9bdd-4d95-b2fd-4e4b5185c390)
 
 ### 📌 Kesimpulan Penggunaan Map
 Penggunaan std::map dalam implementasi Skyline Query ini memberikan manfaat berikut:
@@ -684,10 +684,9 @@ Setelah melakukan pengujian, ditemukan bahwa **Hash Table (unordered_map)** adal
 
 | Struktur Data     | Kecepatan  | Kompleksitas | Catatan                                      |
 |-------------------|------------|--------------|----------------------------------------------|
-| Hash Table        | ⭐⭐⭐⭐⭐     | O(1)         | Tercepat, ideal untuk lookup & update cepat  |
-| Array             | ⭐⭐⭐       | O(n²)        | Sederhana, tapi boros saat data besar        |
-| Stack / Queue     | ⭐⭐        | O(n²)        | Tidak efisien untuk skyline                  |
-| Linked List       | ⭐⭐        | O(n²)        | Sulit untuk penghapusan & traversal acak     |
-| Map               | ⭐         | O(log n)     | Terlambat karena traversal tree              |
-
-Gunakan `Hash Table` untuk performa maksimal dalam kasus seperti Skyline Query yang melibatkan banyak pemeriksaan dominasi antar elemen.
+| Hash Table        | 39 µs    | O(1)         | Tercepat, ideal untuk lookup & update cepat  |
+| Array             | 195 µs      | O(n²)        | Sederhana, tapi boros saat data besar        |
+| Queue     | 532 µs        | O(n²)        | Tidak efisien untuk skyline                  |
+| Linked List       | 38 µs        | O(n²)        | Sulit untuk penghapusan & traversal acak     |
+| Map               | 127 µs         | O(log n)     | Terlambat karena traversal tree              |
+| Stack               | 336 µs         | O(log n)     | Terlambat karena traversal tree              |
