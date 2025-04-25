@@ -9,6 +9,7 @@
 #include "../materials/timer.hpp"
 
 using namespace std;
+using namespace chrono;
 struct product{
     int id;
     string label;
@@ -125,18 +126,15 @@ vector<product> skyline_with_queue(const vector<product>& items) {
 int main() {
     auto products = read_csv("../materials/ind_1000_2_product.csv");
     cout << "Total baris: " << products.size() << "\n";
-    print_table(products);
 
     auto t0 = chrono::high_resolution_clock::now();
     auto sky = skyline_with_queue(products);
     auto t1 = chrono::high_resolution_clock::now();
-    double elapsed = chrono::duration<double>(t1 - t0).count();
 
     cout << "=== Hasil Skyline ===\n";
     print_table(sky);
-    cout << "Waktu komputasi skyline: " 
-         << fixed << setprecision(3) << elapsed * 1000
-         << " ms\n";
+    cout << "\nWaktu komputasi: " <<  duration_cast<microseconds>(t1 - t0).count() << " ms\n";
+
 
 
     return 0;

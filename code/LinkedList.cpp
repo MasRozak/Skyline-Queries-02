@@ -8,6 +8,9 @@
 #include <iomanip>
 #include "../materials/timer.hpp"
 
+
+using namespace std;
+using namespace chrono;
 struct Node {
     int id;
     std::string label;
@@ -101,15 +104,9 @@ int main() {
     const int ITERATIONS = 1000;
     double total_duration_ms = 0.0;
 
-    for (int i = 0; i < ITERATIONS; ++i) {
         auto start = std::chrono::high_resolution_clock::now();
         std::vector<Node*> skyline = skylineQuery(head);
         auto end = std::chrono::high_resolution_clock::now();
-
-        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-        total_duration_ms += duration.count();
-    }
-
     // Hasil akhir satu kali komputasi untuk ditampilkan ke layar
     std::vector<Node*> finalSkyline = skylineQuery(head);
 
@@ -121,15 +118,7 @@ int main() {
                   << ", Nilai Ulasan: " << node->ulasan << "\n";
     }
 
-    // Hitung rata-rata waktu
-    double avg_duration_ns = total_duration_ms / ITERATIONS;
-    double avg_duration_ms = avg_duration_ns / 1e6;
-    double avg_duration_s  = avg_duration_ns / 1e9;
-
-    std::cout << std::fixed << std::setprecision(6);
-
-    std::cout << "\nWaktu komputasi (rata-rata " << ITERATIONS << " iterasi): "
-              << total_duration_ms  << " ms\n";
+    std::cout << "\nWaktu komputasi: " <<  duration_cast<microseconds>(end - start).count() << " ms\n";
 
     freeList(head);
     return 0;

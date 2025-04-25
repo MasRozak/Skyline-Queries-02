@@ -2,99 +2,124 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-#include <unordered_map>
-#include <chrono>
+#include <algorithm>
 #include <string>
-#include <bits/stdc++.h>
+#include <chrono>
+#include <iomanip>
 #include "../materials/timer.hpp"
+
 
 using namespace std;
 using namespace chrono;
-
-struct Baju {
+struct Node {
     int id;
+    std::string label;
     int harga;
-    int rating;
+    int ulasan;
+    Node* next;
 };
 
-bool mendominasi(const Baju &a, const Baju &b) {
-    return (a.harga <= b.harga && a.rating >= b.rating) &&
-           (a.harga < b.harga || a.rating > b.rating);
+Node* insert(Node* head, int id, const std::string& label, int harga, int ulasan) {
+    Node* newNode = new Node{id, label, harga, ulasan, nullptr};
+    if (!head) return newNode;
+
+    Node* temp = head;
+    while (temp->next) temp = temp->next;
+    temp->next = newNode;
+    return head;
 }
 
-vector<Baju> skylineQueryHashTable(const vector<Baju>& data) {
-    unordered_map<int, Baju> hashSkyline;
+bool dominates(Node* a, Node* b) {
+    return (a->harga <= b->harga && a->ulasan >= b->ulasan) &&
+           (a->harga < b->harga || a->ulasan > b->ulasan);
+}
 
-    for (const Baju& baju : data) {
-        bool didominasi = false;
-        vector<int> toRemove;
-
-        for (const auto& pair : hashSkyline) {
-            const Baju& kandidat = pair.second;
-
-            if (mendominasi(kandidat, baju)) {
-                didominasi = true;
+std::vector<Node*> skylineQuery(Node* head) {
+    std::vector<Node*> skyline;
+    for (Node* current = head; current != nullptr; current = current->next) {
+        bool dominated = false;
+        for (auto& s : skyline) {
+            if (dominates(s, current)) {
+                dominated = true;
                 break;
-            } else if (mendominasi(baju, kandidat)) {
-                toRemove.push_back(kandidat.id);
             }
         }
-
-        if (!didominasi) {
-            for (int id : toRemove) {
-                hashSkyline.erase(id);
-            }
-            hashSkyline[baju.id] = baju;
+        if (!dominated) {
+            skyline.erase(
+                std::remove_if(skyline.begin(), skyline.end(),
+                               [&](Node* s) { return dominates(current, s); }),
+                skyline.end());
+            skyline.push_back(current);
         }
     }
+    return skyline;
+}
 
-    vector<Baju> hasil;
-    for (const auto& pair : hashSkyline) {
-        hasil.push_back(pair.second);
+Node* readCSV(const std::string& filename) {
+    std::ifstream file(filename);
+    std::string line;
+    Node* head = nullptr;
+    bool skipHeader = true;
+
+    while (std::getline(file, line)) {
+        if (skipHeader) {
+            skipHeader = false;
+            continue;
+        }
+
+        std::stringstream ss(line);
+        std::string idStr, labelStr, hargaStr, ulasanStr;
+
+        if (!std::getline(ss, idStr, ',') ||
+            !std::getline(ss, labelStr, ',') ||
+            !std::getline(ss, hargaStr, ',') ||
+            !std::getline(ss, ulasanStr, ',')) {
+            std::cerr << "Baris tidak lengkap, dilewati: " << line << "\n";
+            continue;
+        }
+
+        try {
+            int id = std::stoi(idStr);
+            int harga = std::stoi(hargaStr);
+            int ulasan = std::stoi(ulasanStr);
+            head = insert(head, id, labelStr, harga, ulasan);
+        } catch (const std::exception& e) {
+            std::cerr << "Gagal parse baris: " << line << " - " << e.what() << "\n";
+        }
     }
-    return hasil;
+    return head;
+}
+
+void freeList(Node* head) {
+    while (head) {
+        Node* temp = head;
+        head = head->next;
+        delete temp;
+    }
 }
 
 int main() {
-    vector<Baju> dataset;
-    ifstream file("../materials/ind_1000_2_product.csv");
-    string line;
+    Node* head = readCSV("../materials/ind_1000_2_product.csv");
 
-    getline(file, line);
+    const int ITERATIONS = 1000;
+    double total_duration_ms = 0.0;
 
-    while (getline(file, line)) {
-        stringstream ss(line);
-        string id_str, label, harga_str, rating_str;
-    
-        getline(ss, id_str, ',');
-        getline(ss, label, ',');
-        getline(ss, harga_str, ',');
-        getline(ss, rating_str, ',');
-    
-        try {
-            int id = stoi(id_str);
-            int harga = stoi(harga_str);
-            int rating = stoi(rating_str);
-            dataset.push_back({id, harga, rating});
-        } catch (const exception& e) {
-            cerr << "Error parsing line: " << line << "\n";
-        }
+        auto start = std::chrono::high_resolution_clock::now();
+        std::vector<Node*> skyline = skylineQuery(head);
+        auto end = std::chrono::high_resolution_clock::now();
+    // Hasil akhir satu kali komputasi untuk ditampilkan ke layar
+    std::vector<Node*> finalSkyline = skylineQuery(head);
+
+    std::cout << "Skyline Products (Baju Terbaik):\n";
+    for (auto node : finalSkyline) {
+        std::cout << "ID: " << node->id
+                  << ", Label: " << node->label
+                  << ", Harga: " << node->harga
+                  << ", Nilai Ulasan: " << node->ulasan << "\n";
     }
-    
-    file.close();
 
-    auto start = high_resolution_clock::now();
-    vector<Baju> hasilSkyline = skylineQueryHashTable(dataset);
-    auto end = high_resolution_clock::now();
+    std::cout << "\nWaktu komputasi: " <<  duration_cast<microseconds>(end - start).count() << " ms\n";
 
-    duration<double> durasi = end - start;
-
-    cout << "Hasil Skyline (ID, Harga, Rating):\n";
-    for (const auto& b : hasilSkyline) {
-        cout << "ID: " << b.id << ", Harga: " << b.harga << ", Rating: " << b.rating << '\n';
-    }
-    
-    cout << "Waktu eksekusi Hash Table: " << durasi.count() * 1000 << " ms\n";
-
+    freeList(head);
     return 0;
 }

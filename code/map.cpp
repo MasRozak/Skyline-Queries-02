@@ -1,104 +1,118 @@
 #include <iostream>
-#include <vector>
 #include <fstream>
 #include <sstream>
+#include <map>
+#include <chrono>
+#include <vector>
 #include <string>
-#include "../materials/timer.hpp"
-
 
 using namespace std;
+using namespace chrono;
 
-typedef vector<int> Point;
-typedef pair<string, Point> LabeledPoint;
+// Struct untuk menyimpan data produk
+struct Product {
+    string name;
+    float price;   // attr1
+    float rating;  // attr2
+};
 
-// Cek apakah p1 didominasi oleh p2
-bool isDominated(const Point& p1, const Point& p2) {
-        // A mendominasi B jika:
-        // A.harga <= B.harga AND A.rating >= B.rating AND (A.harga < B.harga OR A.rating > B.rating)
-
-    bool harga_better_or_equal = p2[0] <= p1[0]; // harga lebih murah
-    bool rating_better_or_equal = p2[1] >= p1[1]; // rating lebih tinggi
-    bool strictly_better = (p2[0] < p1[0]) || (p2[1] > p1[1]);
-
-    return harga_better_or_equal && rating_better_or_equal && strictly_better;
+// Fungsi untuk mengecek apakah produk a mendominasi produk b
+bool dominates(const Product& a, const Product& b) {
+    return (a.price <= b.price && a.rating >= b.rating) &&
+           (a.price < b.price || a.rating > b.rating);
 }
 
-
-// Hitung skyline lokal dari subset
-vector<LabeledPoint> computeLocalSkyline(const vector<LabeledPoint>& points) {
-    vector<LabeledPoint> skyline;
-    for (const auto& p : points) {
-        bool dominated = false;
-        for (const auto& q : points) {
-            if (p != q && isDominated(p.second, q.second)) {
-                dominated = true;
-                break;
-            }
-        }
-        if (!dominated) skyline.push_back(p);
-    }
-    return skyline;
-}
-
-// Gabungkan semua local skyline, dan hitung skyline global
-vector<LabeledPoint> computeGlobalSkyline(const vector<vector<LabeledPoint>>& localSkylines) {
-    vector<LabeledPoint> merged;
-    for (const auto& skyline : localSkylines) {
-        merged.insert(merged.end(), skyline.begin(), skyline.end());
-    }
-    return computeLocalSkyline(merged);
-}
-
-// Membaca CSV, mengambil kolom label, attr_1, attr_2
-vector<LabeledPoint> readCSV(const string& filename) {
-    vector<LabeledPoint> points;
+// Fungsi untuk membaca CSV dan mengembalikan map produk
+map<int, Product> readCSV(const string& filename) {
+    map<int, Product> products;
     ifstream file(filename);
+
+    if (!file.is_open()) {
+        cerr << "Gagal membuka file CSV.\n";
+        return products;
+    }
+
     string line;
-    bool firstLine = true;
+    getline(file, line); // Lewati header
 
     while (getline(file, line)) {
-        if (firstLine) { firstLine = false; continue; } // skip header
-
         stringstream ss(line);
-        string id, label, val1, val2;
+        string token;
+        int id;
+        string name;
+        float attr1, attr2;
 
-        getline(ss, id, ',');
-        getline(ss, label, ',');
-        getline(ss, val1, ',');
-        getline(ss, val2, ',');
+        getline(ss, token, ','); id = stoi(token);
+        getline(ss, name, ',');
+        getline(ss, token, ','); attr1 = stof(token);
+        getline(ss, token, ','); attr2 = stof(token);
 
-        Point attrs = {stoi(val1), stoi(val2)};
-        points.push_back({label, attrs});
+        Product p;
+        p.name = name;
+        p.price = attr1;
+        p.rating = attr2;
+
+        products[id] = p;
     }
 
     file.close();
-    return points;
+    return products;
+}
+
+// Fungsi untuk menghitung skyline query
+map<int, Product> computeSkyline(const map<int, Product>& products) {
+    map<int, Product> skyline;
+
+    for (map<int, Product>::const_iterator it = products.begin(); it != products.end(); ++it) {
+        int id = it->first;
+        const Product& prod = it->second;
+
+        bool isDominated = false;
+
+        for (map<int, Product>::const_iterator sit = skyline.begin(); sit != skyline.end(); ++sit) {
+            if (dominates(sit->second, prod)) {
+                isDominated = true;
+                break;
+            }
+        }
+
+        if (!isDominated) {
+            vector<int> toRemove;
+            for (map<int, Product>::const_iterator sit = skyline.begin(); sit != skyline.end(); ++sit) {
+                if (dominates(prod, sit->second)) {
+                    toRemove.push_back(sit->first);
+                }
+            }
+
+            for (size_t i = 0; i < toRemove.size(); ++i) {
+                skyline.erase(toRemove[i]);
+            }
+
+            skyline[id] = prod;
+        }
+    }
+
+    return skyline;
 }
 
 int main() {
     string filename = "../materials/ind_1000_2_product.csv";
-    vector<LabeledPoint> data = readCSV(filename);
+    map<int, Product> products = readCSV(filename);
+    auto start = std::chrono::high_resolution_clock::now();
+    map<int, Product> skyline = computeSkyline(products);
+    auto end = std::chrono::high_resolution_clock::now();
 
-    // Simulasi Map Phase: bagi 2 blok
-    size_t half = data.size() / 2;
-    Timer Timer;
-    vector<LabeledPoint> block1(data.begin(), data.begin() + half);
-    vector<LabeledPoint> block2(data.begin() + half, data.end());
 
-    vector<LabeledPoint> skyline1 = computeLocalSkyline(block1);
-    vector<LabeledPoint> skyline2 = computeLocalSkyline(block2);
-
-    vector<vector<LabeledPoint>> localSkylines = {skyline1, skyline2};
-    vector<LabeledPoint> result = computeGlobalSkyline(localSkylines);
-    
-    
-    double durasi = Timer.stop();
-    cout << "Skyline Points (label, attr_1, attr_2):" << endl;
-    for (const auto& item : result) {
-        string label = item.first;
-        Point attrs = item.second;
-        cout << label << ": " << attrs[0] << ", " << attrs[1] << endl;
+    // Tampilkan hasil
+    cout << "Produk-produk hasil skyline query:\n";
+    for (map<int, Product>::iterator it = skyline.begin(); it != skyline.end(); ++it) {
+        cout << "ID: " << it->first
+             << ", Nama: " << it->second.name
+             << ", Harga: " << it->second.price
+             << ", Rating: " << it->second.rating << endl;
     }
-    cout << "Waktu eksekusi: " << durasi << " detik" << endl;
+
+    std::cout << "\nWaktu komputasi: " <<  duration_cast<microseconds>(end - start).count() << " ms\n";
+
     return 0;
 }

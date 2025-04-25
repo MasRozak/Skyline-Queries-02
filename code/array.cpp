@@ -58,7 +58,7 @@ int readCSV(const string &filename, Product products[]) {
     return count;
 }
 
-int skylineQuery(Product products[], int productCount, Product skyline[], double* duration) {
+int skylineQuery(Product products[], int productCount, Product skyline[]) {
     int skylineCount = 0;
 
     auto start = high_resolution_clock::now();
@@ -75,9 +75,6 @@ int skylineQuery(Product products[], int productCount, Product skyline[], double
             skyline[skylineCount++] = products[i];
         }
     }
-    auto end = high_resolution_clock::now();
-    auto elapsed = duration_cast<microseconds>(end - start); // << ganti ini
-    *duration = elapsed.count() / 1000.0; // << convert ke ms dengan koma
     return skylineCount;
 }
 
@@ -88,12 +85,10 @@ int main() {
     
 
     int productCount = readCSV(filename, products);
-    double t;
     auto start = high_resolution_clock::now();
-    int skylineCount = skylineQuery(products, productCount, skyline, &t);
+    int skylineCount = skylineQuery(products, productCount, skyline);
     auto end = high_resolution_clock::now();
 
-    duration<double> waktu = end - start;
     cout << "Skyline Products (Baju Terbaik):\n";
     for (int i = 0; i < skylineCount; ++i) {
         cout << "ID: " << skyline[i].id
@@ -102,7 +97,7 @@ int main() {
              << ", Nilai Ulasan: " << skyline[i].attr2 << "\n";
     }
 
-    cout << "\nWaktu komputasi: " << t << " ms\n";
+    cout << "\nWaktu komputasi: " <<  duration_cast<microseconds>(end - start).count() << " ms\n";
 
     return 0;
 }

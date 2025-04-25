@@ -8,6 +8,7 @@
 #include "../materials/timer.hpp"
 
 using namespace std;
+using namespace chrono;
 
 struct Product {
     int id;
@@ -106,7 +107,6 @@ int main() {
     vector<Product> skyline = skylineQueryWithStack(products);
 
     auto end = chrono::high_resolution_clock::now();
-    chrono::duration<double> duration = end - start;
 
     cout << "Skyline Result (via Stack):\n";
     for (const auto& p : skyline) {
@@ -114,7 +114,7 @@ int main() {
                   << ", Harga: " << p.harga << ", Rating: " << p.rating << "\n";
     }
 
-    cout << "\nWaktu Komputasi: " << duration.count() * 1000 << " ms\n";
+    cout << "\nWaktu komputasi: " <<  duration_cast<microseconds>(end - start).count() << " ms\n";
 
     return 0;
 }
