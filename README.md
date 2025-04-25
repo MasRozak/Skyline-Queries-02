@@ -655,7 +655,7 @@ Setelah melakukan pengujian, ditemukan bahwa **Hash Table (unordered_map)** adal
   - Cocok untuk pemeriksaan dan penghapusan elemen yang didominasi tanpa traversal sekuensial.
 - **Kelemahan:** Tidak menjaga urutan elemen.
 
-### 2. Map (`std::map`) ❌
+### 2. Map (`std::map`) 
 - **Kompleksitas:** O(log n) karena berbasis **binary search tree** (biasanya Red-Black Tree).
 - **Mengapa lambat?**
   - Untuk setiap operasi pencarian dan penyisipan, perlu traversal tree.
@@ -680,6 +680,10 @@ Setelah melakukan pengujian, ditemukan bahwa **Hash Table (unordered_map)** adal
 
 ---
 
+Berikut merupakan komparasi rata-rata waktu dari semua metode:
+
+![Image](https://github.com/user-attachments/assets/662ec424-269a-4784-a012-ead41fa080ca)
+
 ## 🚀 Kesimpulan
 
 | Struktur Data     | Kecepatan  | Kompleksitas | Catatan                                      |
@@ -689,4 +693,4 @@ Setelah melakukan pengujian, ditemukan bahwa **Hash Table (unordered_map)** adal
 | Queue     | 532 µs        | O(n²)        | Tidak efisien untuk skyline                  |
 | Linked List       | 38 µs        | O(n²)        | Sulit untuk penghapusan & traversal acak     |
 | Map               | 127 µs         | O(log n)     | Terlambat karena traversal tree              |
-| Stack               | 336 µs         | O(log n)     | Terlambat karena traversal tree              |
+| Stack               | 336 µs         | O(log n)     | Tidak efisien untuk skyline              |
