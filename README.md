@@ -435,7 +435,7 @@ Misal ada produk X (Harga 30, Rating 240):
 
 Keuntungan ini juga tercatat dalam Output ketika menggunakan set kode yang telah diberikan untuk mengukur seberapa lama jika sebuah program memakai hash table untuk mengeksekusi sebuah algoritma, berikut merupakan hasil dari pencatatan waktu menggunakan hash table:
 
-![image](image.png)
+![Image](https://github.com/user-attachments/assets/dffc04b1-2e38-4506-813b-83fd44bcd1b7)
 
 Dari gambar output tersebut, dapat disimpulkan bahwa penggunaan hash table tergolong sangat cepat dan menggunakan waktu yang sangat minimum untuk menemukan data yang tidak terdominasi.
 
