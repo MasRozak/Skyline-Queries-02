@@ -99,7 +99,7 @@ Lalu hasilnya ditampilkan:
 Output tersebut menunjukkan produk-produk yang paling kompetitif, yaitu:
 - Harga murah tapi ulasan tinggi, atau
 - Harga tinggi tapi dengan ulasan yang sangat tinggi, atau
-- Harga sangat murah walau ulasan cukup, dllaik.
+- Harga sangat murah walau ulasan cukup, dll.
 
 ---
 
