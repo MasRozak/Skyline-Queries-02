@@ -4,7 +4,7 @@
 #include <string>
 #include <chrono>
 #include <cstdlib>
-#include "../materials/timer.hpp"
+
 
 using namespace std;
 using namespace chrono;
@@ -79,7 +79,7 @@ int skylineQuery(Product products[], int productCount, Product skyline[]) {
 }
 
 int main() {
-    string filename = "../materials/ind_1000_2_product.csv";
+    string filename = "ind_1000_2_product.csv";
     Product products[MAX_PRODUCTS];
     Product skyline[MAX_PRODUCTS];
     
