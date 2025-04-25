@@ -566,6 +566,14 @@ Hasil akhir: `sky` berisi produk-produk skyline yang **saling incomparable** yai
 Output dari program ini adalah sembilan produk yang saling incomparable. Input yang digunakan adalah file .csv yang berisi 1000 data produk baju.  
   ![Image](https://github.com/user-attachments/assets/bf6faf32-6af5-42a1-8287-fef7cc5bfd84)
 
+💡 **Keuntungan**
+| Fitur                  | Keuntungan                                                                 |
+|------------------------|----------------------------------------------------------------------------|
+| 🕐 FIFO               | Menjamin urutan evaluasi sesuai data masuk, cocok untuk data streaming atau real-time |
+| ♻️ Pop–Compare–Push Cycle  | Memudahkan proses pengecekan dominasi antar produk satu per satu secara efisien         |
+| 🧠 Memori Efisien        | Hanya menyimpan kandidat produk skyline, tidak perlu menyimpan seluruh dataset         |
+| ✅ Deteksi Dominasi Mudah | Queue memungkinkan pengecekan dominasi secara langsung dan iteratif                      |
+
 📍 **Kesimpulan:**
 Queue lebih efisien digunakan untuk data berukuran kecil sampai menengah dan kurang cocok apabila digunakan untuk data berukuran besar dikarenakan kompleksitasnya **O(n²)**.
 
