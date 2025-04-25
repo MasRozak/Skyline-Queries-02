@@ -716,9 +716,9 @@ Berikut merupakan komparasi rata-rata waktu dari semua metode:
 
 | Struktur Data     | Kecepatan  | Kompleksitas | Catatan                                      |
 |-------------------|------------|--------------|----------------------------------------------|
+| Linked List       | 38 µs        | O(n²)        | Dataset nya tergolon kecil dan tidak memerlukan penghapusan dan traversing acak berlebihan     |
 | Hash Table        | 39 µs    | O(1)         | Tercepat, ideal untuk lookup & update cepat  |
-| Array             | 195 µs      | O(n²)        | Sederhana, tapi boros saat data besar        |
-| Queue     | 532 µs        | O(n²)        | Tidak efisien untuk skyline                  |
-| Linked List       | 38 µs        | O(n²)        | Sulit untuk penghapusan & traversal acak     |
 | Map               | 127 µs         | O(log n)     | Terlambat karena traversal tree              |
+| Array             | 195 µs      | O(n²)        | Sederhana, tapi boros saat data besar        |
 | Stack               | 336 µs         | O(n²)     | Tidak efisien untuk skyline              |
+| Queue     | 532 µs        | O(n²)        | Tidak efisien untuk skyline                  |
