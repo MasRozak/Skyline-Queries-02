@@ -693,4 +693,4 @@ Berikut merupakan komparasi rata-rata waktu dari semua metode:
 | Queue     | 532 µs        | O(n²)        | Tidak efisien untuk skyline                  |
 | Linked List       | 38 µs        | O(n²)        | Sulit untuk penghapusan & traversal acak     |
 | Map               | 127 µs         | O(log n)     | Terlambat karena traversal tree              |
-| Stack               | 336 µs         | O(log n)     | Tidak efisien untuk skyline              |
+| Stack               | 336 µs         | O(n²)     | Tidak efisien untuk skyline              |
