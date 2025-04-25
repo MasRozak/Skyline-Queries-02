@@ -93,7 +93,8 @@ Lalu hasilnya ditampilkan:
 
 ### Berikut Output Array Menggunakan Data 1000 Baju
 
-![Image](https://github.com/user-attachments/assets/b0d4ddd7-d015-420c-a5f3-eae6bf569b13)
+![output array](https://github.com/user-attachments/assets/06cf5afa-d894-4f4b-b7c5-3270b1a9f9d9)
+
 
 Output tersebut menunjukkan produk-produk yang paling kompetitif, yaitu:
 - Harga murah tapi ulasan tinggi, atau
