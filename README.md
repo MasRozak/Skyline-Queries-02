@@ -571,60 +571,80 @@ Queue lebih efisien digunakan untuk data berukuran kecil sampai menengah dan kur
 
 ---
 
-## 📖 6. Penjelasan Penggunaan Map dalam Algoritma Skyline Query
+## 📖 6. Penjelasan Penggunaan `std::map` dalam Algoritma Skyline Query
+
 ### 📑 Apa itu Map ❓
-**Map** adalah struktur data yang menyimpan pasangan kunci-nilai. Dalam konteks Skyline Query, kita menggunakan `std::map` untuk menyimpan objek `Baju` berdasarkan ID-nya. Map ini diimplementasikan sebagai **binary search tree** (biasanya Red-Black Tree), yang memungkinkan penyimpanan elemen dalam urutan tertentu.
-### 🔧 Fungsi Skyline Query dengan Map
-Dalam implementasi ini, std::map digunakan untuk menyimpan hasil akhir dari skyline query. Berikut struktur penyimpanannya:
-```cpp
-map<string, Point> skylineMap;
+
+`std::map` adalah struktur data associative container dalam C++ yang menyimpan pasangan kunci-nilai dalam urutan yang terurut berdasarkan kunci.Dalam implementasi ini, kita menggunakan `std::map<int, Product>` untuk menyimpan:
+
+Produk awal dari file CSV (1000 Entries)
+
+Hasil akhir dari skyline query (skyline Product)
+
+`-std::map` menggunakan struktur Red-Black Tree, sehingga menjamin operasi pencarian, penyisipan, dan penghapusan dalam waktu O(log N).
+
+### 🔧 Struktur dan Fungsi dalam Program
+
 ```
-Map tersebut menyimpan data dalam bentuk:
-
-   - key: Label atau ID dari produk (string)
-
-   - value: Vektor atribut (Point), berisi harga dan rating
-
-⚙️ Proses Algoritma:
-Pada proses akhir skyline query:
-
-Setelah menghitung global skyline, hasil disimpan dalam struktur map.
-
-Data disusun secara otomatis berdasarkan urutan alfabet label karena std::map menjaga urutan berdasarkan key.
-
-Penyimpanan ke dalam map dilakukan dengan satu baris sederhana:
-
-```cpp
-skylineMap[item.first] = item.second;
+map<int, Product> products; // Menyimpan seluruh produk dari CSV
+map<int, Product> skyline;  // Menyimpan hasil skyline
 ```
+`Key: ID produk (int)
+`
 
-### 💡 Keuntungan Penggunaan map
-Fitur | Keuntungan Menggunakan std::map
-📚 Urutan Berdasarkan Key | Data terurut otomatis berdasarkan label
-🔍 Akses Mudah dan Aman | Cek apakah suatu label sudah ada atau tidak
-🧩 Struktur Teratur | Mudah untuk ditampilkan dan ditelusuri
-🔁 Iterasi Teratur | Cocok untuk mencetak hasil yang rapi
+`Value: Struct Product, berisi nama, harga, dan rating
+`
+
+### 🧠 Proses Skyline Query
+
+Membaca CSV Fungsi readCSV() membaca file CSV dan menyimpan setiap entri ke dalam map products.
+
+Skyline FilteringFungsi computeSkyline() menyeleksi produk-produk yang tidak didominasi oleh produk lain. Setiap produk dibandingkan dengan produk lain untuk menentukan apakah ia layak masuk ke hasil skyline.
+
+Penyimpanan Hasil Produk-produk yang lolos disimpan ke dalam map skyline.
+
+### 💡 Keuntungan Menggunakan `std::map`
+
+
+
+| Fitur            | Keuntungan    |
+|------------------|---------------|
+|🔡 Urutan Berdasarkan Key |Hasil skyline otomatis terurut berdasarkan ID produk|
+|🔍 Akses Efisien|Cari, tambah, atau hapus produk dengan waktu O(log N)|
+|🧱 Struktur Tertata|Mudah ditelusuri dan digunakan untuk debugging|
+|🔁 Iterasi Teratur|Ideal untuk mencetak hasil yang konsisten
+
 
 
 ### ⏱️ Kompleksitas
-Penyisipan dan penghapusan: O(log N)
 
-Pencarian berdasarkan key: O(log N)
+Operasi
+| Operasi      | Kompleksitas |
+|--------------|--------------|
+| Penyisipan   | O(log N)     |
+| Penghapusan  | O(log N)     |
+| Pencarian    | O(log N)     |
 
-Walaupun tidak secepat unordered_map (yang O(1) untuk rata-rata kasus), map menawarkan keuntungan keterurutan, yang cocok bila ingin hasil akhir tertata rapi (misalnya, saat menampilkan output ke pengguna).
+`std::map` lebih lambat dibanding `unordered_map` (yang O(1) untuk rata-rata kasus), tetapi lebih cocok jika kita membutuhkan urutan teratur, seperti pada hasil laporan.
 
-![Image](https://github.com/user-attachments/assets/7a220236-9bdd-4d95-b2fd-4e4b5185c390)
 
-### 📌 Kesimpulan Penggunaan Map
-Penggunaan std::map dalam implementasi Skyline Query ini memberikan manfaat berikut:
+📊 Output Program
 
-Menyimpan hasil skyline secara terstruktur dan terurut.
+Setelah skyline selesai dihitung, program mencetak daftar produk skyline:
 
-Mempermudah visualisasi dan debugging.
+![Image](https://github.com/user-attachments/assets/3fd85acb-586a-4023-8f5f-0b811fa00db7)
 
-Lebih stabil dan deterministik urutan hasil dibandingkan unordered_map.
 
-Cocok digunakan pada aplikasi yang membutuhkan output yang bisa ditebak urutannya, seperti laporan pengguna atau data statistik.
+### 📌 Kesimpulan
+
+- Penggunaan `std::map` dalam algoritma skyline query:
+
+- Memastikan data hasil terurut secara deterministik
+
+- Memberikan efisiensi dan keterbacaan saat debugging
+
+- Cocok untuk aplikasi statistik atau pelaporan pengguna
+
 
 
 
