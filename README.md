@@ -170,7 +170,7 @@ std::chrono::duration<double> duration = end - start;
 
 ### output:
 
-![alt text](image-2.png)
+![image](image-2.png)
 
 
 ### 📊 Analisis Kompleksitas
