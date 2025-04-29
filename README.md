@@ -658,68 +658,68 @@ Setelah skyline selesai dihitung, program mencetak daftar produk skyline:
 
 
 
-# Analisis Performa Struktur Data untuk Skyline Query
+## Skyline Query Data Structure Performance Analysis
 
-Dalam implementasi algoritma Skyline Query, enam struktur data yang digunakan untuk menyimpan dan memproses data adalah:
+This document compares the performance of six data structures when implementing a Skyline Query algorithm. The analysis is based on empirical testing results.
 
-- `Array`
-- `Stack`
-- `Queue`
-- `Linked List`
-- `Map` (`std::map`)
-- `Hash Table` (`std::unordered_map`)
+## 🏆 Performance Rankings
 
-Setelah melakukan pengujian, ditemukan bahwa **Hash Table (unordered_map)** adalah yang tercepat, sedangkan **Map (std::map)** adalah yang paling lambat.
+| Data Structure       | Average Time (μs) | Relative Speed (vs Linked List) |
+|----------------------|------------------:|--------------------------------:|
+| **Linked List**      | 38 μs             | 1.00x (Fastest)                |
+| **Hash Table**       | 39 μs             | 1.03x                          |
+| **Map (std::map)**   | 127 μs            | 3.34x                          |
+| **Array**           | 195 μs            | 5.13x                          |
+| **Stack**           | 336 μs            | 8.84x                          |
+| **Queue**           | 532 μs            | 14.00x (Slowest)               |
 
----
+## 🔍 Detailed Analysis
 
+### 🥇 **Linked List (Best Performance)**
+- **Why fastest?**
+  - Excellent cache locality for small datasets
+  - Low overhead for insertions/deletions
+  - Sequential access pattern fits skyline algorithm well
 
+### 🥈 **Hash Table (std::unordered_map)**
+- **Nearly as fast as Linked List**
+  - O(1) average case operations
+  - Slightly higher overhead due to hashing
+  - Better suited for larger datasets
 
-## 🔍 Penjelasan Performa
+### 🥉 **Map (std::map)**
+- **3.3x slower than Linked List**
+  - Red-Black Tree implementation (O(log n) operations)
+  - Sorting overhead not needed for skyline queries
 
-### 1. Hash Table (`std::unordered_map`) ✅
-- **Kompleksitas rata-rata:** O(1) untuk pencarian, penyisipan, dan penghapusan.
-- **Mengapa cepat?**
-  - Menggunakan **hashing** yang mengakses elemen langsung melalui indeks hash.
-  - Cocok untuk pemeriksaan dan penghapusan elemen yang didominasi tanpa traversal sekuensial.
-- **Kelemahan:** Tidak menjaga urutan elemen.
+### **Other Structures**
+| Structure | Key Limitations |
+|-----------|----------------|
+| Array     | O(n²) dominance checks, expensive deletions |
+| Stack     | LIFO access pattern is suboptimal |
+| Queue     | FIFO access pattern is worst-case |
 
-### 2. Map (`std::map`) 
-- **Kompleksitas:** O(log n) karena berbasis **binary search tree** (biasanya Red-Black Tree).
-- **Mengapa lambat?**
-  - Untuk setiap operasi pencarian dan penyisipan, perlu traversal tree.
-  - Meskipun elemen terurut, performa tidak cocok untuk kasus-kasus yang mengandalkan pencarian cepat.
+## 📈 Performance Visualization
 
-### 3. Array
-- **Kompleksitas:** O(n²) untuk skyline query karena perlu perbandingan berpasangan.
-- **Mengapa lumayan?**
-  - Akses langsung cepat (O(1)), tetapi tidak efisien untuk operasi manipulasi (penyisipan atau penghapusan di tengah).
+![Performance Comparison Chart](https://github.com/user-attachments/assets/662ec424-269a-4784-a012-ead41fa080ca)
 
-### 4. Stack / Queue
-- **Kompleksitas:** O(n²) juga saat membandingkan antar elemen.
-- **Karakteristik:**
-  - Stack: LIFO – tidak cocok untuk pemeriksaan dominasi acak.
-  - Queue: FIFO – sama, tidak efisien untuk pencarian acak.
+## 🚀 Recommendations
 
-### 5. Linked List
-- **Kompleksitas:** O(n²) karena traversal pointer.
-- **Mengapa kalah cepat?**
-  - Tidak mendukung akses langsung.
-  - Semua perbandingan dan penghapusan perlu traversal manual.
-
----
-
-Berikut merupakan komparasi rata-rata waktu dari semua metode:
-
-![Image](https://github.com/user-attachments/assets/662ec424-269a-4784-a012-ead41fa080ca)
-
-## 🚀 Kesimpulan
-
-| Struktur Data     | Kecepatan  | Kompleksitas | Catatan                                      |
-|-------------------|------------|--------------|----------------------------------------------|
-| Linked List       | 38 µs        | O(n²)        | Dataset nya tergolong kecil dan tidak memerlukan penghapusan dan traversing acak berlebihan     |
-| Hash Table        | 39 µs    | O(1)         | Tercepat, ideal untuk lookup & update cepat  |
-| Map               | 127 µs         | O(log n)     | Terlambat karena traversal tree              |
-| Array             | 195 µs      | O(n²)        | Sederhana, tapi boros saat data besar        |
-| Stack               | 336 µs         | O(n²)     | Tidak efisien untuk skyline              |
-| Queue     | 532 µs        | O(n²)        | Tidak efisien untuk skyline                  |
+**For small datasets:**
+```cpp
+std::list<Point> // Best choice (38μs)
+```
+**For medium to large datasets:**
+```cpp
+std::unordered_map<int, Point> // Fast and efficient (39μs)
+```
+**For sorted output:**
+```cpp
+std::map<int, Point> // Slower but maintains order (127μs)
+```
+**Avoid for skyline:**
+```cpp
+std::array<Point, N> // Inefficient for skyline (195μs)
+std::queue<Point> // Worst performer (532μs)
+std::stack<Point> // Poor access pattern (336μs)
+```
